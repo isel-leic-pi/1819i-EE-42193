@@ -31,8 +31,9 @@ function getRequest(path, callback, queryString){
         json: true
     }
 
-    if(typeof qs !== undefined)
+    if(typeof queryString !== undefined){
         options.qs = queryString  
+    }
 
     request(options, callback);
 }
