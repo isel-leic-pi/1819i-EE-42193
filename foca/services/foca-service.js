@@ -2,6 +2,7 @@ const FootballData = require('../data/football-data')
 let footballData = new FootballData
 const FocaData = require('../data/foca-db')
 let focaData = new FocaData
+let count
 
 module.exports = class FocaService {
     
@@ -29,11 +30,6 @@ module.exports = class FocaService {
         focaData.getFavoriteGroupById(groupId, callback)
     }
     
-    getMatchesByGroup(groupId, queryString, callback){
-        //Not the correct behavior, just for testing purposes
-        footballData.getMatchesByTeamId(groupId, queryString, callback)
-    }
-    
     addTeamToGroup(groupId, teamId, callback){
         focaData.putTeamInGroup(groupId, teamId, callback)
     }
@@ -41,4 +37,33 @@ module.exports = class FocaService {
     removeTeamFromGroup(groupId, teamId, callback){
         focaData.deleteTeamFromGroup(groupId, teamId, callback)
     }
+
+    getMatchesByGroup(groupId, queryString, callback){
+        focaData.getFavoriteGroupById(groupId,function (err, data) {
+            let matches = []
+            if(err) {
+                callback(err,[])
+            } else {
+                let teams = data.body._source.teams
+                count = teams.length
+                teams.forEach(teamId => {
+                    footballData.getMatchesByTeamId(teamId, queryString, function (err, data){
+                        if(err){
+                            console.log(err)
+                        }
+                        else {
+                            matches.push(data)
+                            cb(callback,err,matches)
+                        }
+                    })
+                });
+            }
+        })
+    }
+}
+
+//TODO: find a better way to call the final callback when every data is available
+function cb(finalCallback, err, data){
+    if(--count == 0)
+        finalCallback(err,data);
 }

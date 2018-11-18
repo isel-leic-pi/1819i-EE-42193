@@ -41,7 +41,7 @@ function getLeagues(req, res) {
 }
 
 /**
- *  GET /leagues/:league_id -- detalhes de uma liga 
+ *  GET /foca/leagues/:league_id -- detalhes de uma liga 
  */
 function getLeaguesById(req, res) {
     const url = parse(req.url, true)
@@ -67,7 +67,7 @@ function getLeaguesById(req, res) {
 }
 
 /**
- *  GET /favorites/groups -- lista de grupos favoritos 
+ *  GET /foca/favorites/groups -- lista de grupos favoritos 
  */
 function getGroupList(req, res) {
     const url = parse(req.url, true)
@@ -91,7 +91,7 @@ function getGroupList(req, res) {
 }
 
 /**
- *  POST /favorites/groups -- criar um grupo
+ *  POST /foca/favorites/groups -- criar um grupo
  */
 function postGroup(req, res) {
     const url = parse(req.url, true)
@@ -125,15 +125,13 @@ function postGroup(req, res) {
 }
 
 /**
- *  PUT /favorites/groups/:group_id -- editar um grupo
+ *  PUT /foca/favorites/groups/:group_id -- editar um grupo
  */
 function editGroup(req, res) {
     const url = parse(req.url, true)
     const {pathname} = url
 
-    const pattern = /\d+/g
-    const groupId = pathname.match(pattern)
-
+    const groupId = pathname.split("/")[4]
     let body = [];
 
     if(req.method == 'PUT' && pathname == `/foca/favorites/groups/${groupId}`) {
@@ -162,14 +160,13 @@ function editGroup(req, res) {
 }
 
 /**
- *  GET /favorites/groups/:group_id -- detalhes de um grupo
+ *  GET /foca/favorites/groups/:group_id -- detalhes de um grupo
  */
 function getGroupById(req, res) {
     const url = parse(req.url, true)
     const {pathname} = url
 
-    const pattern = /\d+/g
-    const groupId = pathname.match(pattern)
+    const groupId = pathname.split("/")[4]
     
     if(req.method == 'GET' && pathname == `/foca/favorites/groups/${groupId}`) {
         focaService.getGroupById(groupId, function (err, data) {
@@ -188,14 +185,13 @@ function getGroupById(req, res) {
 }
 
 /**
- *  GET /favorites/groups/:group_id/matches -- obter os jogos das equipas de um grupo
+ *  GET /foca/favorites/groups/:group_id/matches -- obter os jogos das equipas de um grupo
  */
 function getMatchesByGroup(req, res) {
     const url = parse(req.url, true)
     const {pathname, query} = url
 
-    const pattern = /\d+/g
-    const groupId = pathname.match(pattern)
+    const groupId = pathname.split("/")[4]
     
     if(req.method == 'GET' && pathname == `/foca/favorites/groups/${groupId}/matches`) {
         focaService.getMatchesByGroup(groupId, query, function (err, data) {
@@ -214,17 +210,17 @@ function getMatchesByGroup(req, res) {
 }
 
 /**
- *  PUT /favorites/groups/:group_id/teams/:team_id -- adicionar equipa a grupo
+ *  PUT /foca/favorites/groups/:group_id/teams/:team_id -- adicionar equipa a grupo
  */
 function addTeamToGroup(req, res) {
     const url = parse(req.url, true)
     const {pathname} = url
 
-    const pattern = /\d+/g
-    const idList = pathname.match(pattern)
+    const groupId = pathname.split("/")[4]
+    const teamId = pathname.split("/")[6]
     
-    if(req.method == 'PUT' && pathname == `/foca/favorites/groups/${idList[0]}/teams/${idList[1]}`) {
-        focaService.addTeamToGroup(idList[0], parseInt(idList[1]), function (err, data) {
+    if(req.method == 'PUT' && pathname == `/foca/favorites/groups/${groupId}/teams/${teamId}`) {
+        focaService.addTeamToGroup(groupId, parseInt(teamId), function (err, data) {
             if(err) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
@@ -240,17 +236,17 @@ function addTeamToGroup(req, res) {
 }
 
 /**
- *  DELETE /favorites/groups/:group_id/matches/:team_id -- remover uma equipa de um grupo
+ *  DELETE /foca/favorites/groups/:group_id/teams/:team_id -- remover uma equipa de um grupo
  */
 function removeTeamFromGroup(req, res) {
     const url = parse(req.url, true)
     const {pathname} = url
 
-    const pattern = /\d+/g
-    const idList = pathname.match(pattern)
+    const groupId = pathname.split("/")[4]
+    const teamId = pathname.split("/")[6]
     
-    if(req.method == 'DELETE' && pathname == `/foca/favorites/groups/${idList[0]}/teams/${idList[1]}`) {
-        focaService.removeTeamFromGroup(idList[0], parseInt(idList[1]), function (err, data) {
+    if(req.method == 'DELETE' && pathname == `/foca/favorites/groups/${groupId}/teams/${teamId}`) {
+        focaService.removeTeamFromGroup(groupId, parseInt(teamId), function (err, data) {
             if(err) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)

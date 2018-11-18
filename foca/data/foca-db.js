@@ -55,11 +55,16 @@ function postRequest(groupName, groupDescription, path, callback){
 
 function putRequestToUpdateGroupInfo(newName, newDescription, path, callback){
     let groupObj = {
-        name: newName,
-        description: newDescription
+        script : {
+            inline : "ctx._source.name = params.name; ctx._source.description = params.description;",
+            params : {
+                name : newName,
+                description : newDescription
+            }
+        }
     }
     const options = {
-        method: 'PUT',
+        method: 'POST',
         url: baseUrl + path,
         json: true,
         body: groupObj

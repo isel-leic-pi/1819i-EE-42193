@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "04d58c32-d104-460b-b539-b4b70cd9c56c",
+		"name": "PI - Foca",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Leagues",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/leagues",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"leagues"
+					]
+				},
+				"description": "Obter a lista de todas as ligas"
+			},
+			"response": []
+		},
+		{
+			"name": "Get League Information",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/leagues/2003",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"leagues",
+						"2003"
+					]
+				},
+				"description": "Obter as equipas de uma determinada liga"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Favourites",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups"
+					]
+				},
+				"description": "Obter a lista de grupos de equipas favoritas"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Novo Grupo\",\n\t\"description\" : \"Descricao do novo grupo\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups"
+					]
+				},
+				"description": "Criar grupo de equipas favoritas"
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Group",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"name\" : \"Sexto Grupo\",\r\n\t\"description\" : \"Descricao do sexto grupo\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups/QzYeKGcBiLhWrTB2VpHD",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups",
+						"QzYeKGcBiLhWrTB2VpHD"
+					]
+				},
+				"description": "Editar nome e descrição do grupo"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Team to Group",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups/OzaIJmcBiLhWrTB2aZGt/teams/10",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups",
+						"OzaIJmcBiLhWrTB2aZGt",
+						"teams",
+						"10"
+					]
+				},
+				"description": "Adicionar equipa a um grupo"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Team From Group",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups/OzaIJmcBiLhWrTB2aZGt/teams/10",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups",
+						"OzaIJmcBiLhWrTB2aZGt",
+						"teams",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Group Games",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups/i8kJJGcBSAafA5skJ5RO/matches?dateFrom=2018-10-14&dateTo=2019-01-16",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups",
+						"i8kJJGcBSAafA5skJ5RO",
+						"matches"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "2018-10-14"
+						},
+						{
+							"key": "dateTo",
+							"value": "2019-01-16"
+						}
+					]
+				},
+				"description": "Obter jogos de todas as equipas de um grupo entre duas datas"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Group Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups/i8kJJGcBSAafA5skJ5RO",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups",
+						"i8kJJGcBSAafA5skJ5RO"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
