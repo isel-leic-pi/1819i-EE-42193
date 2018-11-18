@@ -1,3 +1,5 @@
+'use strict'
+
 const parse = require('url').parse
 const FocaService = require('../services/foca-service')
 let focaService = new FocaService;
@@ -77,6 +79,7 @@ function getGroupList(req, res) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
             } else {
+                console.log(data)
                 res.statusCode = 200
                 res.setHeader('content-type', 'application/json')
                 res.end(JSON.stringify(data))
@@ -93,9 +96,22 @@ function getGroupList(req, res) {
 function postGroup(req, res) {
     const url = parse(req.url, true)
     const {pathname} = url
-    
+
+    let body = [];
+
     if(req.method == 'POST' && pathname == '/foca/favorites/groups') {
-        focaService.postGroup( function (err, data) {
+        req.on('data', (chunk) => {
+            body.push(chunk);
+        }).on('end', () => {
+            body = Buffer.concat(body).toString();
+            callPostGroup(JSON.parse(body));
+        });
+        return true
+    }
+    return false
+
+    function callPostGroup(bodyObj){
+        focaService.postGroup(bodyObj.name, bodyObj.description, function (err, data) {
             if(err) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
@@ -105,9 +121,7 @@ function postGroup(req, res) {
                 res.end(JSON.stringify(data))
             }
         })
-        return true
     }
-    return false
 }
 
 /**
@@ -119,21 +133,32 @@ function editGroup(req, res) {
 
     const pattern = /\d+/g
     const groupId = pathname.match(pattern)
-    
+
+    let body = [];
+
     if(req.method == 'PUT' && pathname == `/foca/favorites/groups/${groupId}`) {
-        focaService.editGroup(groupId, function (err, data) {
+        req.on('data', (chunk) => {
+            body.push(chunk);
+        }).on('end', () => {
+            body = Buffer.concat(body).toString();
+            callEditGroup(JSON.parse(body));
+        });
+        return true
+    }
+    return false
+
+    function callEditGroup(bodyObj){
+        focaService.editGroup(bodyObj.name, bodyObj.description, groupId, function (err, data) {
             if(err) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
             } else {
-                res.statusCode = 201
+                res.statusCode = 200
                 res.setHeader('content-type', 'application/json')
                 res.end(JSON.stringify(data))
             }
         })
-        return true
     }
-    return false
 }
 
 /**
@@ -199,7 +224,7 @@ function addTeamToGroup(req, res) {
     const idList = pathname.match(pattern)
     
     if(req.method == 'PUT' && pathname == `/foca/favorites/groups/${idList[0]}/teams/${idList[1]}`) {
-        focaService.addTeamToGroup(idList[0], idList[1], function (err, data) {
+        focaService.addTeamToGroup(idList[0], parseInt(idList[1]), function (err, data) {
             if(err) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
@@ -225,7 +250,7 @@ function removeTeamFromGroup(req, res) {
     const idList = pathname.match(pattern)
     
     if(req.method == 'DELETE' && pathname == `/foca/favorites/groups/${idList[0]}/teams/${idList[1]}`) {
-        focaService.removeTeamFromGroup(idList[0], idList[1], function (err, data) {
+        focaService.removeTeamFromGroup(idList[0], parseInt(idList[1]), function (err, data) {
             if(err) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
