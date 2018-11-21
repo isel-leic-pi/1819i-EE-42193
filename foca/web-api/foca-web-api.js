@@ -5,6 +5,7 @@ const FocaService = require('../services/foca-service')
 let focaService = new FocaService;
 
 module.exports = (app) => {
+    app.use(welcome)
     app.use(getLeagues)
     app.use(getLeaguesById)
     app.use(getGroupList)
@@ -15,6 +16,17 @@ module.exports = (app) => {
     app.use(addTeamToGroup)
     app.use(removeTeamFromGroup)
     app.use(resourceNotFound)
+}
+
+function welcome(req, res) {
+    const url = parse(req.url, true)
+    const {pathname} = url
+    
+    if(req.method == 'GET' && pathname == '/') {
+        res.statusCode = 200
+        res.setHeader('content-type', 'text/plain')
+        res.end('Welcome to Foca API!')
+    }    
 }
 
 /**

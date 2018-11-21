@@ -9,7 +9,7 @@ foca_api(webServer)
 const port = 1904
 
 http.createServer(webServer.router).listen(port, () => {
-    console.log('Server listening on port ' + port)
+    console.log('Server listening on port ' + port + ` -> http://localhost:${port}/`)
 })
 
 function WebServer() {
