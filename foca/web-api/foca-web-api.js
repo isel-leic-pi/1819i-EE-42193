@@ -1,6 +1,7 @@
 'use strict'
 
 const parse = require('url').parse
+const responseBuilder = require('../utils/response-builder')
 const FocaService = require('../services/foca-service')
 let focaService = new FocaService;
 
@@ -68,9 +69,13 @@ function getLeaguesById(req, res) {
                 res.statusCode = err.code
                 res.end(err.message + '\n' + err.error)
             } else {
-                res.statusCode = 200
-                res.setHeader('content-type', 'application/json')
-                res.end(JSON.stringify(data))
+                if(data.statusCode == 404)
+                    //res.end(JSON.stringify(data));
+                    res.end(responseBuilder.errorMsg(data));
+                else res.end(responseBuilder.singleLeague(data.body));
+                //res.statusCode = 200
+                //res.setHeader('content-type', 'application/json')
+                //res.end(JSON.stringify(data))
             }
         })
         return true
@@ -275,6 +280,6 @@ function removeTeamFromGroup(req, res) {
 
 function resourceNotFound(req, res) {
     res.statusCode = 404
-    res.end('Resource Not Found')    
+    res.end('Resource Not Found')
     return true
 }
