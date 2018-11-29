@@ -1,31 +1,18 @@
 const http = require('http')
-const parse = require('url').parse
+const express = require('express')
+const morgan = require('morgan')
 const foca_api = require('./web-api/foca-web-api')
+const config = require('./foca-config.json')
 
-const webServer = new WebServer()
+const port = config.port;
+const host = config.host;
 
-foca_api(webServer)
+const app = express()
+app.use(morgan('dev'))
+foca_api(app)
 
-const port = 1904
-
-http.createServer(webServer.router).listen(port, () => {
-    console.log('Server listening on port ' + port + ` -> http://localhost:${port}/`)
-})
-
-function WebServer() {
-    const routes = []
-
-    this.use = (route) => routes.push(route)
-
-    this.router = (req, res) => {
-        const url = parse(req.url, true)
-        const {pathname} = url
-        console.log(`${Date()}: ${req.method} request to ${pathname}`)
-
-        for (let index = 0; index < routes.length; index++) {
-            const r = routes[index]
-            if(r(req, res))
-                break
-        }
-    }
-}
+http
+    .createServer(app)
+    .listen(port, host, () => {
+        console.log('Server listening on port ' + port + ` -> http://${host}:${port}/`)
+    })
