@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path');
 const fs = require('fs');
 const responseBuilder = require('../utils/response-builder')
@@ -14,12 +12,11 @@ module.exports = (app) => {
     app.get('/foca/favorites/groups', getGroupList)
     app.post('/foca/favorites/groups', postGroup)
     app.put('/foca/favorites/groups/:groupId', editGroup)
-    app.use('/foca/favorites/groups/:groupId', getGroupById)
-    app.use('/foca/favorites/groups/:groupId/matches', getMatchesByGroup)
+    app.get('/foca/favorites/groups/:groupId', getGroupById)
+    app.get('/foca/favorites/groups/:groupId/matches', getMatchesByGroup)
     app.put('/foca/favorites/groups/:groupId/teams/:teamId', addTeamToGroup)
     app.delete('/foca/favorites/groups/:groupId/teams/:teamId', removeTeamFromGroup)
 }
-
 
 function welcome(req, res) {
     res.statusCode = 200
@@ -159,7 +156,7 @@ function getGroupById(req, res) {
  *  GET /foca/favorites/groups/:groupId/matches -- obter os jogos das equipas de um grupo
  */
 function getMatchesByGroup(req, res) {
-    focaService.getMatchesByGroup(req.params.groupId, query, function (err, data) {
+    focaService.getMatchesByGroup(req.params.groupId, req.query, function (err, data) {
         if(err) {
             res.statusCode = err.code
             res.end(err.message + '\n' + err.error)
