@@ -1,11 +1,19 @@
-const FootballData = require('../data/football-data')
+let FootballData = require('../data/football-data')
 let footballData = new FootballData
-const FocaData = require('../data/foca-db')
+let FocaData = require('../data/foca-db')
 let focaData = new FocaData
 let count
 
 module.exports = class FocaService {
-    
+    constructor(mockFootballDataPath, mockFocaDbPath){
+        if(mockFootballDataPath && mockFocaDbPath){
+            FootballData = require(mockFootballDataPath)
+            footballData = new FootballData
+            FocaData = require(mockFocaDbPath)
+            focaData = new FocaData
+        }
+    }
+
     getLeagues(callback){
         footballData.getLeagues(callback)
     }

@@ -1,31 +1,32 @@
 let request = require('request')
+const config = require('../foca-config.json')
 
-const baseUrl = 'http://localhost:9200/'
+const baseUrl = `http://${config.es.host}:${config.es.port}/${config.es.index}/${config.es.type}`
 
 module.exports = class FocaDatabase {
     
     getFavorites(callback){
-        getRequest(`favorites/groups/_search`,callback)
+        getRequest(`/_search`,callback)
     }
 
     getFavoriteGroupById(groupId,callback){
-        getRequest(`favorites/groups/${groupId}`,callback)
+        getRequest(`/${groupId}`,callback)
     }
 
     postGroup(name,description,callback){
-        postRequest(name,description,`favorites/groups`,callback)
+        postRequest(name,description,``,callback)
     }
 
     putGroupById(name,description,groupId,callback){
-        putRequestToUpdateGroupInfo(name,description,`favorites/groups/${groupId}/_update`,callback)
+        putRequestToUpdateGroupInfo(name,description,`/${groupId}/_update`,callback)
     }
 
     putTeamInGroup(groupId,teamId,callback){
-        postRequestToAddTeam(teamId,`favorites/groups/${groupId}/_update`,callback)
+        postRequestToAddTeam(teamId,`/${groupId}/_update`,callback)
     }
 
     deleteTeamFromGroup(groupId,teamId,callback){
-        postRequestToRemoveTeam(teamId,`favorites/groups/${groupId}/_update`,callback)
+        postRequestToRemoveTeam(teamId,`/${groupId}/_update`,callback)
     }
 }
 
