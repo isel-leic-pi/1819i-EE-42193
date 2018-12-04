@@ -1,0 +1,17 @@
+{
+    "body": {
+        "_index": "favorites",
+        "_type": "groups",
+        "_id": "OzaIJmcBiLhWrTB2aZGt",
+        "_version": 1,
+        "found": true,
+        "_source": {
+            "name": "Segundo Grupo",
+            "description": "Descricao do segundo grupo",
+            "teams": [
+                15,
+                17
+            ]
+        }
+    }
+}

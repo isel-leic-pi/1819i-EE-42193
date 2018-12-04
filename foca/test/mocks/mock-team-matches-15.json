@@ -1,0 +1,131 @@
+{
+    "count": 10,
+    "filters": {
+        "permission": "TIER_ONE",
+        "dateFrom": "2018-10-14",
+        "dateTo": "2019-01-16",
+        "limit": 100
+    },
+    "matches": [
+        {
+            "id": 235754,
+            "competition": {
+                "id": 2002,
+                "name": "Bundesliga"
+            },
+            "season": {
+                "id": 155,
+                "startDate": "2018-08-24",
+                "endDate": "2019-05-18",
+                "currentMatchday": 13,
+                "winner": null
+            },
+            "utcDate": "2018-10-21T16:00:00Z",
+            "status": "FINISHED",
+            "matchday": 8,
+            "stage": "REGULAR_SEASON",
+            "group": "Regular Season",
+            "lastUpdated": "2018-12-01T18:30:25Z",
+            "score": {
+                "winner": "HOME_TEAM",
+                "duration": "REGULAR",
+                "fullTime": {
+                    "homeTeam": 4,
+                    "awayTeam": 0
+                },
+                "halfTime": {
+                    "homeTeam": 1,
+                    "awayTeam": 0
+                },
+                "extraTime": {
+                    "homeTeam": null,
+                    "awayTeam": null
+                },
+                "penalties": {
+                    "homeTeam": null,
+                    "awayTeam": null
+                }
+            },
+            "homeTeam": {
+                "id": 18,
+                "name": "Borussia Mönchengladbach"
+            },
+            "awayTeam": {
+                "id": 15,
+                "name": "1. FSV Mainz 05"
+            },
+            "referees": [
+                {
+                    "id": 57515,
+                    "name": "Sören Storks",
+                    "nationality": null
+                },
+                {
+                    "id": 57530,
+                    "name": "Thorben Siewer",
+                    "nationality": null
+                }
+            ]
+        },
+        {
+            "id": 235764,
+            "competition": {
+                "id": 2002,
+                "name": "Bundesliga"
+            },
+            "season": {
+                "id": 155,
+                "startDate": "2018-08-24",
+                "endDate": "2019-05-18",
+                "currentMatchday": 13,
+                "winner": null
+            },
+            "utcDate": "2018-10-27T13:30:00Z",
+            "status": "FINISHED",
+            "matchday": 9,
+            "stage": "REGULAR_SEASON",
+            "group": "Regular Season",
+            "lastUpdated": "2018-12-01T18:30:25Z",
+            "score": {
+                "winner": "AWAY_TEAM",
+                "duration": "REGULAR",
+                "fullTime": {
+                    "homeTeam": 1,
+                    "awayTeam": 2
+                },
+                "halfTime": {
+                    "homeTeam": 0,
+                    "awayTeam": 1
+                },
+                "extraTime": {
+                    "homeTeam": null,
+                    "awayTeam": null
+                },
+                "penalties": {
+                    "homeTeam": null,
+                    "awayTeam": null
+                }
+            },
+            "homeTeam": {
+                "id": 15,
+                "name": "1. FSV Mainz 05"
+            },
+            "awayTeam": {
+                "id": 5,
+                "name": "FC Bayern München"
+            },
+            "referees": [
+                {
+                    "id": 253,
+                    "name": "Harm Osmers",
+                    "nationality": null
+                },
+                {
+                    "id": 338,
+                    "name": "Norbert Grudzinski",
+                    "nationality": null
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,92 @@
+{
+    "count": 4,
+    "filters": {},
+    "competitions": [
+        {
+            "id": 2006,
+            "area": {
+                "id": 2001,
+                "name": "Africa"
+            },
+            "name": "WC Qualification",
+            "code": null,
+            "emblemUrl": null,
+            "plan": "TIER_FOUR",
+            "currentSeason": {
+                "id": 7,
+                "startDate": "2015-10-07",
+                "endDate": "2017-11-14",
+                "currentMatchday": 6,
+                "winner": null
+            },
+            "numberOfAvailableSeasons": 1,
+            "lastUpdated": "2018-06-04T23:54:04Z"
+        },
+        {
+            "id": 2025,
+            "area": {
+                "id": 2011,
+                "name": "Argentina"
+            },
+            "name": "Supercopa Argentina",
+            "code": null,
+            "emblemUrl": null,
+            "plan": "TIER_FOUR",
+            "currentSeason": {
+                "id": 27,
+                "startDate": "2018-03-15",
+                "endDate": "2018-03-15",
+                "currentMatchday": null,
+                "winner": {
+                    "id": 2069,
+                    "name": "CA River Plate",
+                    "shortName": "River Plate",
+                    "tla": "RIV",
+                    "crestUrl": null
+                }
+            },
+            "numberOfAvailableSeasons": 1,
+            "lastUpdated": "2018-06-04T23:54:32Z"
+        },
+        {
+            "id": 2023,
+            "area": {
+                "id": 2011,
+                "name": "Argentina"
+            },
+            "name": "Primera B Nacional",
+            "code": null,
+            "emblemUrl": null,
+            "plan": "TIER_FOUR",
+            "currentSeason": {
+                "id": 295,
+                "startDate": "2018-08-25",
+                "endDate": "2019-04-20",
+                "currentMatchday": 12,
+                "winner": null
+            },
+            "numberOfAvailableSeasons": 2,
+            "lastUpdated": "2018-12-02T01:55:15Z"
+        },
+        {
+            "id": 2001,
+            "area": {
+                "id": 2077,
+                "name": "Europe"
+            },
+            "name": "UEFA Champions League",
+            "code": "CL",
+            "emblemUrl": "https://upload.wikimedia.org/wikipedia/en/b/bf/UEFA_Champions_League_logo_2.svg",
+            "plan": "TIER_ONE",
+            "currentSeason": {
+                "id": 175,
+                "startDate": "2018-06-26",
+                "endDate": "2019-06-01",
+                "currentMatchday": 6,
+                "winner": null
+            },
+            "numberOfAvailableSeasons": 19,
+            "lastUpdated": "2018-11-29T21:05:03Z"
+        }
+    ]
+}

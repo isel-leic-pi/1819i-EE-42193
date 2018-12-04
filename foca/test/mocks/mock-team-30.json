@@ -1,0 +1,54 @@
+{
+    "id": 30,
+    "area": {
+        "id": 2088,
+        "name": "Germany"
+    },
+    "activeCompetitions": [
+        {
+            "id": 2129,
+            "area": {
+                "id": 2088,
+                "name": "Germany"
+            },
+            "name": "Regionalliga",
+            "code": "REG",
+            "plan": "TIER_THREE",
+            "lastUpdated": "2018-12-02T16:12:00Z"
+        }
+    ],
+    "name": "FSV Frankfurt",
+    "shortName": "FSV Frankfurt",
+    "tla": "FSV",
+    "crestUrl": "http://upload.wikimedia.org/wikipedia/de/c/ce/FSV_Frankfurt_1899.svg",
+    "address": "Am Erlenbruch 1 Frankfurt am Main 60386",
+    "phone": "+49 (069) 4208980",
+    "website": "http://www.fsv-frankfurt.de",
+    "email": "info@fsv-frankfurt.de",
+    "founded": 1899,
+    "clubColors": "Black / Blue",
+    "venue": "Frankfurter Volksbank Stadion",
+    "squad": [
+        {
+            "id": 66151,
+            "name": "Marco Aulbach",
+            "position": "Goalkeeper",
+            "dateOfBirth": "1993-07-25T00:00:00Z",
+            "countryOfBirth": "Germany",
+            "nationality": "Germany",
+            "shirtNumber": 33,
+            "role": "PLAYER"
+        },
+        {
+            "id": 66171,
+            "name": "Matay Birol",
+            "position": "Goalkeeper",
+            "dateOfBirth": "1997-08-16T00:00:00Z",
+            "countryOfBirth": "Turkey",
+            "nationality": "Germany",
+            "shirtNumber": 1,
+            "role": "PLAYER"
+        }
+    ],
+    "lastUpdated": "2018-10-15T15:08:10Z"
+}

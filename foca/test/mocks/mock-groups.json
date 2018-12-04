@@ -1,0 +1,46 @@
+{
+    "took": 152,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 2,
+        "max_score": 1,
+        "hits": [
+            {
+                "_index": "favorites",
+                "_type": "groups",
+                "_id": "i8kJJGcBSAafA5skJ5RO",
+                "_score": 1,
+                "_source": {
+                    "name": "Primeiro Grupo",
+                    "description": "Descricao do primeiro grupo",
+                    "teams": [
+                        3,
+                        8,
+                        52
+                    ]
+                }
+            },
+            {
+                "_index": "favorites",
+                "_type": "groups",
+                "_id": "OzaIJmcBiLhWrTB2aZGt",
+                "_score": 1,
+                "_source": {
+                    "name": "Segundo Grupo",
+                    "description": "Descricao do segundo grupo",
+                    "teams": [
+                        15,
+                        42,
+                        10
+                    ]
+                }
+            }
+        ]
+    }
+}

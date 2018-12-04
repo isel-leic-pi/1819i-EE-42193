@@ -1,0 +1,15 @@
+{
+    "_index": "favorites",
+    "_type": "groups",
+    "_id": "i8kJJGcBSAafA5skJ5RO",
+    "_score": 1,
+    "_source": {
+        "name": "Primeiro Grupo",
+        "description": "Descricao do primeiro grupo",
+        "teams": [
+            3,
+            8,
+            52
+        ]
+    }
+}

@@ -5,6 +5,7 @@ let focaData = new FocaData
 let count
 
 module.exports = class FocaService {
+    
     constructor(mockFootballDataPath, mockFocaDbPath){
         if(mockFootballDataPath && mockFocaDbPath){
             FootballData = require(mockFootballDataPath)
@@ -47,7 +48,7 @@ module.exports = class FocaService {
     }
 
     getMatchesByGroup(groupId, queryString, callback){
-        focaData.getFavoriteGroupById(groupId,function (err, data) {
+        focaData.getFavoriteGroupById(groupId, function (err, data) {
             let matches = []
             if(err) {
                 callback(err,[])
@@ -57,7 +58,7 @@ module.exports = class FocaService {
                 teams.forEach(teamId => {
                     footballData.getMatchesByTeamId(teamId, queryString, function (err, data){
                         if(err){
-                            console.log(err)
+                            callback(err,[])
                         }
                         else {
                             matches.push(data)

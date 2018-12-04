@@ -1,0 +1,41 @@
+{
+    "id": 2001,
+    "area": {
+        "id": 2077,
+        "name": "Europe"
+    },
+    "name": "UEFA Champions League",
+    "code": "CL",
+    "emblemUrl": "https://upload.wikimedia.org/wikipedia/en/b/bf/UEFA_Champions_League_logo_2.svg",
+    "plan": "TIER_ONE",
+    "currentSeason": {
+        "id": 175,
+        "startDate": "2018-06-26",
+        "endDate": "2019-06-01",
+        "currentMatchday": 6,
+        "winner": null
+    },
+    "seasons": [
+        {
+            "id": 175,
+            "startDate": "2018-06-26",
+            "endDate": "2019-06-01",
+            "currentMatchday": 6,
+            "winner": null
+        },
+        {
+            "id": 2,
+            "startDate": "2017-06-27",
+            "endDate": "2018-05-26",
+            "currentMatchday": 6,
+            "winner": {
+                "id": 86,
+                "name": "Real Madrid CF",
+                "shortName": "Real Madrid",
+                "tla": "RMA",
+                "crestUrl": "http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg"
+            }
+        }
+    ],
+    "lastUpdated": "2018-11-29T21:05:03Z"
+}
