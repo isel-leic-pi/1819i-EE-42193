@@ -32,37 +32,38 @@ function favicon(req, res) {
     fs.createReadStream(icon).pipe(res);   
 }
 
-
 /**
  * GET /foca/leagues -- lista das ligas
  */
-function getLeagues(req, res) {
-    focaService.getLeagues( function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(JSON.stringify(data))
-        }
-    })
+async function getLeagues(req, res) {
+    try{
+        let leaguesList = await focaService.getLeagues()
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.multipleLeagues(leaguesList))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 /**
  *  GET /foca/leagues/:leagueId -- detalhes de uma liga 
  */
-function getLeaguesById(req, res) {
-    focaService.getLeaguesById(req.params.leagueId, function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            if(data.statusCode == 404)
-                res.end(responseBuilder.errorMsg(data));
-            else res.end(responseBuilder.singleLeague(data.body));
-        }
-    })
+async function getLeaguesById(req, res) {
+    try{
+        let league = await focaService.getLeaguesById(req.params.leagueId)
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.singleLeague(league))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 /**
@@ -198,4 +199,16 @@ function removeTeamFromGroup(req, res) {
             res.end(JSON.stringify(data))
         }
     })
+}
+
+function statusCodeManager(statusCode){
+    if(statusCode === 403)
+        return {statusCode: 403, message: 'The resource you are looking for is restricted.'}
+    
+    if(statusCode >= 400 && statusCode < 418)
+        return {statusCode: 404, message: 'The resource you are looking for does not exist.'}
+
+    if(statusCode >= 500 && statusCode < 506)
+        return {statusCode: 502, message: 'The information provider service is unavailable.'}
+
 }

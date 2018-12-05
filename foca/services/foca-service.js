@@ -15,12 +15,12 @@ module.exports = class FocaService {
         }
     }
 
-    getLeagues(callback){
-        footballData.getLeagues(callback)
+    async getLeagues(){
+        return await footballData.getLeagues()
     }
     
-    getLeaguesById(league_id, callback){
-        footballData.getLeaguesById(league_id, callback)
+    async getLeaguesById(league_id){
+        return await footballData.getLeaguesById(league_id)
     }
 
     getGroupList(callback){
@@ -55,6 +55,7 @@ module.exports = class FocaService {
             } else {
                 let teams = data.body._source.teams
                 count = teams.length
+                //mudar para map
                 teams.forEach(teamId => {
                     footballData.getMatchesByTeamId(teamId, queryString, function (err, data){
                         if(err){
