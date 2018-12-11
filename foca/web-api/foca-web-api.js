@@ -69,18 +69,18 @@ async function getLeaguesById(req, res) {
 /**
  *  GET /foca/favorites/groups -- lista de grupos favoritos 
  */
-function getGroupList(req, res) {
-    focaService.getGroupList( function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            console.log(data)
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(JSON.stringify(data))
-        }
-    })
+async function getGroupList(req, res) {
+    try{
+        let groupsList = await focaService.getGroupList()
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.multipleGroups(groupsList))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 /**
@@ -96,17 +96,18 @@ function postGroup(req, res) {
         callPostGroup(JSON.parse(body));
     });
 
-    function callPostGroup(bodyObj){
-        focaService.postGroup(bodyObj.name, bodyObj.description, function (err, data) {
-            if(err) {
-                res.statusCode = err.code
-                res.end(err.message + '\n' + err.error)
-            } else {
-                res.statusCode = 201
-                res.setHeader('content-type', 'application/json')
-                res.end(JSON.stringify(data))
-            }
-        })
+    async function callPostGroup(bodyObj){
+        try{
+            let info = await focaService.postGroup(bodyObj.name, bodyObj.description)
+            res.statusCode = 201
+            res.setHeader('content-type', 'application/json')
+            res.end(responseBuilder.createdOrEditedGroup(info))
+        } catch (err) {
+            let statusObj = statusCodeManager(err.statusCode)
+            res.statusCode = statusObj.statusCode
+            res.setHeader('content-type', 'application/json')
+            res.end(responseBuilder.errorMsg(statusObj))
+        }
     }
 }
 
@@ -123,82 +124,93 @@ function editGroup(req, res) {
         callEditGroup(JSON.parse(body));
     });
 
-    function callEditGroup(bodyObj){
-        focaService.editGroup(bodyObj.name, bodyObj.description, req.params.groupId, function (err, data) {
-            if(err) {
-                res.statusCode = err.code
-                res.end(err.message + '\n' + err.error)
-            } else {
-                res.statusCode = 200
-                res.setHeader('content-type', 'application/json')
-                res.end(JSON.stringify(data))
-            }
-        })
+    async function callEditGroup(bodyObj){
+        try{
+            let info = await focaService.editGroup(bodyObj.name, bodyObj.description, req.params.groupId)
+            res.statusCode = 200
+            res.setHeader('content-type', 'application/json')
+            res.end(responseBuilder.createdOrEditedGroup(info))
+        } catch (err) {
+            let statusObj = statusCodeManager(err.statusCode)
+            res.statusCode = statusObj.statusCode
+            res.setHeader('content-type', 'application/json')
+            res.end(responseBuilder.errorMsg(statusObj))
+        }
     }
 }
 
 /**
  *  GET /foca/favorites/groups/:groupId -- detalhes de um grupo
  */
-function getGroupById(req, res) {
-    focaService.getGroupById(req.params.groupId, function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(JSON.stringify(data))
-        }
-    })
+async function getGroupById(req, res) {
+    try{
+        let group = await focaService.getGroupById(req.params.groupId)
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.singleGroup(group))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 /**
  *  GET /foca/favorites/groups/:groupId/matches -- obter os jogos das equipas de um grupo
  */
-function getMatchesByGroup(req, res) {
-    focaService.getMatchesByGroup(req.params.groupId, req.query, function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(JSON.stringify(data))
+async function getMatchesByGroup(req, res) {
+    try{
+        let groupMatches = await focaService.getMatchesByGroup(req.params.groupId, req.query)
+        if(groupMatches.length == 0) {
+            //TO FINISH
+            res.end(responseBuilder.errorMsg(statusObj))
+            return
         }
-    })
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        //res.end(responseBuilder.multipleMatches(groupMatches))
+        res.end(JSON.stringify(groupMatches))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 /**
  *  PUT /foca/favorites/groups/:groupId/teams/:teamId -- adicionar equipa a grupo
  */
-function addTeamToGroup(req, res) {
-    focaService.addTeamToGroup(req.params.groupId, parseInt(req.params.teamId), function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(JSON.stringify(data))
-        }
-    })
+async function addTeamToGroup(req, res) {
+    try{
+        let info = await focaService.addTeamToGroup(req.params.groupId, parseInt(req.params.teamId))
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.createdOrEditedGroup(info))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 /**
  *  DELETE /foca/favorites/groups/:groupId/teams/:teamId -- remover uma equipa de um grupo
  */
-function removeTeamFromGroup(req, res) {
-    focaService.removeTeamFromGroup(req.params.groupId, parseInt(req.params.teamId), function (err, data) {
-        if(err) {
-            res.statusCode = err.code
-            res.end(err.message + '\n' + err.error)
-        } else {
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(JSON.stringify(data))
-        }
-    })
+async function removeTeamFromGroup(req, res) {
+    try{
+        let info = await focaService.removeTeamFromGroup(req.params.groupId, parseInt(req.params.teamId))
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.createdOrEditedGroup(info))
+    } catch (err) {
+        let statusObj = statusCodeManager(err.statusCode)
+        res.statusCode = statusObj.statusCode
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.errorMsg(statusObj))
+    }
 }
 
 function statusCodeManager(statusCode){
@@ -210,5 +222,4 @@ function statusCodeManager(statusCode){
 
     if(statusCode >= 500 && statusCode < 506)
         return {statusCode: 502, message: 'The information provider service is unavailable.'}
-
 }
