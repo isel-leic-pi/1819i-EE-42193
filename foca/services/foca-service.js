@@ -39,7 +39,6 @@ module.exports = class FocaService {
     }
     
     async addTeamToGroup(groupId, teamId){
-        //verificar se a equipa existe
         let team = await footballData.getTeam(teamId)
         let teamObj = {id: teamId, name: team.name}
         return await focaData.putTeamInGroup(groupId, teamObj)

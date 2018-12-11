@@ -42,10 +42,7 @@ async function getLeagues(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.multipleLeagues(leaguesList))
     } catch (err) {
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
 }
 
@@ -59,10 +56,7 @@ async function getLeaguesById(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.singleLeague(league))
     } catch (err) {
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
 }
 
@@ -76,10 +70,7 @@ async function getGroupList(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.multipleGroups(groupsList))
     } catch (err) {
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
 }
 
@@ -103,10 +94,7 @@ function postGroup(req, res) {
             res.setHeader('content-type', 'application/json')
             res.end(responseBuilder.createdOrEditedGroup(info))
         } catch (err) {
-            let statusObj = statusCodeManager(err.statusCode)
-            res.statusCode = statusObj.statusCode
-            res.setHeader('content-type', 'application/json')
-            res.end(responseBuilder.errorMsg(statusObj))
+            errorHandler(err,res)
         }
     }
 }
@@ -131,10 +119,7 @@ function editGroup(req, res) {
             res.setHeader('content-type', 'application/json')
             res.end(responseBuilder.createdOrEditedGroup(info))
         } catch (err) {
-            let statusObj = statusCodeManager(err.statusCode)
-            res.statusCode = statusObj.statusCode
-            res.setHeader('content-type', 'application/json')
-            res.end(responseBuilder.errorMsg(statusObj))
+            errorHandler(err,res)
         }
     }
 }
@@ -149,10 +134,7 @@ async function getGroupById(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.singleGroup(group))
     } catch (err) {
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
 }
 
@@ -173,11 +155,7 @@ async function getMatchesByGroup(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.multipleMatches(groupMatches))
     } catch (err) {
-        console.log(err)
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
 }
 
@@ -191,10 +169,7 @@ async function addTeamToGroup(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.createdOrEditedGroup(info))
     } catch (err) {
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
 }
 
@@ -208,11 +183,15 @@ async function removeTeamFromGroup(req, res) {
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.createdOrEditedGroup(info))
     } catch (err) {
-        let statusObj = statusCodeManager(err.statusCode)
-        res.statusCode = statusObj.statusCode
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.errorMsg(statusObj))
+        errorHandler(err,res)
     }
+}
+
+function errorHandler(err, res){
+    let statusObj = statusCodeManager(err.statusCode)
+    res.statusCode = statusObj.statusCode
+    res.setHeader('content-type', 'application/json')
+    res.end(responseBuilder.errorMsg(statusObj))
 }
 
 function statusCodeManager(statusCode){
