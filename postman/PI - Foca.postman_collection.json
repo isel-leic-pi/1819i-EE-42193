@@ -90,6 +90,19 @@
 		},
 		{
 			"name": "Create Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b8f8746d-676c-4c04-8cff-919cc9625d05",
+						"exec": [
+							"let jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"groupId\", jsonData.group_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -134,7 +147,7 @@
 					"raw": "{\r\n\t\"name\" : \"Sexto Grupo\",\r\n\t\"description\" : \"Descricao do sexto grupo\"\r\n}"
 				},
 				"url": {
-					"raw": "{{baseUri}}/foca/favorites/groups/QzYeKGcBiLhWrTB2VpHD",
+					"raw": "{{baseUri}}/foca/favorites/groups/{{groupId}}",
 					"host": [
 						"{{baseUri}}"
 					],
@@ -142,7 +155,7 @@
 						"foca",
 						"favorites",
 						"groups",
-						"QzYeKGcBiLhWrTB2VpHD"
+						"{{groupId}}"
 					]
 				},
 				"description": "Editar nome e descrição do grupo"
@@ -165,7 +178,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUri}}/foca/favorites/groups/OzaIJmcBiLhWrTB2aZGt/teams/10",
+					"raw": "{{baseUri}}/foca/favorites/groups/{{groupId}}/teams/10",
 					"host": [
 						"{{baseUri}}"
 					],
@@ -173,7 +186,7 @@
 						"foca",
 						"favorites",
 						"groups",
-						"OzaIJmcBiLhWrTB2aZGt",
+						"{{groupId}}",
 						"teams",
 						"10"
 					]
@@ -183,39 +196,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete Team From Group",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{baseUri}}/foca/favorites/groups/OzaIJmcBiLhWrTB2aZGt/teams/10",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"foca",
-						"favorites",
-						"groups",
-						"OzaIJmcBiLhWrTB2aZGt",
-						"teams",
-						"10"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Group Games",
+			"name": "Get Group Matches",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -230,7 +211,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUri}}/foca/favorites/groups/i8kJJGcBSAafA5skJ5RO/matches?dateFrom=2018-10-14&dateTo=2019-01-16",
+					"raw": "{{baseUri}}/foca/favorites/groups/{{groupId}}/matches?dateFrom=2018-10-14&dateTo=2019-01-16",
 					"host": [
 						"{{baseUri}}"
 					],
@@ -238,7 +219,7 @@
 						"foca",
 						"favorites",
 						"groups",
-						"i8kJJGcBSAafA5skJ5RO",
+						"{{groupId}}",
 						"matches"
 					],
 					"query": [
@@ -272,7 +253,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUri}}/foca/favorites/groups/i8kJJGcBSAafA5skJ5RO",
+					"raw": "{{baseUri}}/foca/favorites/groups/{{groupId}}",
 					"host": [
 						"{{baseUri}}"
 					],
@@ -280,7 +261,39 @@
 						"foca",
 						"favorites",
 						"groups",
-						"i8kJJGcBSAafA5skJ5RO"
+						"{{groupId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Team From Group",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/foca/favorites/groups/{{groupId}}/teams/10",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"foca",
+						"favorites",
+						"groups",
+						"{{groupId}}",
+						"teams",
+						"10"
 					]
 				}
 			},
