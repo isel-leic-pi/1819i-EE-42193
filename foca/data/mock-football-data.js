@@ -1,18 +1,19 @@
 
 module.exports = class FootballDatabase {
     
-    getLeagues(callback){
-        const competitions = require('../test/mocks/mock-competitions.json')
-        callback(undefined, competitions)
+    getLeagues(){
+        return new Promise(resolve => resolve(require('../test/mocks/mock-competitions.json')))
     }
     
-    getLeaguesById(leagueId, callback){
-        const competition = require('../test/mocks/mock-competition-' + leagueId + '.json')
-        callback(undefined, competition)
+    getLeaguesById(leagueId){
+        return new Promise(resolve => resolve(require('../test/mocks/mock-competition-' + leagueId + '.json')))
     }
 
-    getMatchesByTeamId(teamId, queryString, callback){
-        const matches = require('../test/mocks/mock-team-matches-' + teamId + '.json')
-        callback(undefined, matches)
+    getTeam(teamId){
+        return new Promise(resolve => resolve(require('../test/mocks/mock-team-' + teamId + '.json')))
+    }
+
+    getMatchesByTeamId(teamId, queryString){
+        return new Promise(resolve => resolve(require('../test/mocks/mock-team-matches-' + teamId + '.json')))
     }
 }

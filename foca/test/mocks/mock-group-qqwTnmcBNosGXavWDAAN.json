@@ -1,0 +1,20 @@
+{
+    "_index": "favorites",
+    "_type": "groups",
+    "_id": "qqwTnmcBNosGXavWDAAN",
+    "_score": 1,
+    "_source": {
+        "name": "Segundo Grupo",
+        "description": "Descricao do segundo grupo",
+        "teams": [
+            {
+                "name": "1. FSV Mainz 05",
+                "id": 15
+            },
+            {
+                "name": "SC Freiburg",
+                "id": 17
+            }
+        ]
+    }
+}
