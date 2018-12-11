@@ -1,45 +1,45 @@
-let request = require('request')
+let rp = require('request-promise')
 const config = require('../foca-config.json')
 
 const baseUrl = `http://${config.es.host}:${config.es.port}/${config.es.index}/${config.es.type}`
 
 module.exports = class FocaDatabase {
     
-    getFavorites(callback){
-        getRequest(`/_search`,callback)
+    getFavorites(){
+        return getRequest(`/_search`)
     }
 
-    getFavoriteGroupById(groupId,callback){
-        getRequest(`/${groupId}`,callback)
+    getFavoriteGroupById(groupId){
+        return getRequest(`/${groupId}`)
     }
 
-    postGroup(name,description,callback){
-        postRequest(name,description,``,callback)
+    postGroup(name, description){
+        return postRequest(name, description, ``)
     }
 
-    putGroupById(name,description,groupId,callback){
-        putRequestToUpdateGroupInfo(name,description,`/${groupId}/_update`,callback)
+    putGroupById(name, description, groupId){
+        return putRequestToUpdateGroupInfo(name, description, `/${groupId}/_update`)
     }
 
-    putTeamInGroup(groupId,teamId,callback){
-        postRequestToAddTeam(teamId,`/${groupId}/_update`,callback)
+    putTeamInGroup(groupId, teamObj){
+        return postRequestToAddTeam(teamObj, `/${groupId}/_update`)
     }
 
-    deleteTeamFromGroup(groupId,teamId,callback){
-        postRequestToRemoveTeam(teamId,`/${groupId}/_update`,callback)
+    deleteTeamFromGroup(groupId, teamId){
+        return postRequestToRemoveTeam(teamId, `/${groupId}/_update`)
     }
 }
 
-function getRequest(path, callback){
+async function getRequest(path){
     const options = {
         method: 'GET',
         url: baseUrl + path,
         json: true
     }
-    request(options, callback)
+    return await rp(options)
 }
 
-function postRequest(groupName, groupDescription, path, callback){
+async function postRequest(groupName, groupDescription, path){
     let groupObj = {
         name: groupName,
         description: groupDescription,
@@ -51,10 +51,10 @@ function postRequest(groupName, groupDescription, path, callback){
         json: true,
         body: groupObj
     }
-    request(options, callback)
+    return await rp(options)
 }
 
-function putRequestToUpdateGroupInfo(newName, newDescription, path, callback){
+async function putRequestToUpdateGroupInfo(newName, newDescription, path){
     let groupObj = {
         script : {
             inline : "ctx._source.name = params.name; ctx._source.description = params.description;",
@@ -70,15 +70,15 @@ function putRequestToUpdateGroupInfo(newName, newDescription, path, callback){
         json: true,
         body: groupObj
     }
-    request(options, callback)
+    return await rp(options)
 }
 
-function postRequestToAddTeam(teamId, path, callback){
+async function postRequestToAddTeam(teamObj, path){
     let object = {
         script : {
             inline : "if(!ctx._source.teams.contains(params.team)) ctx._source.teams.add(params.team);",
             params : {
-                team : teamId
+                team : teamObj
             }
         }
     }
@@ -88,13 +88,13 @@ function postRequestToAddTeam(teamId, path, callback){
         json: true,
         body: object
     }
-    request(options, callback)
+    return await rp(options)
 }
 
-function postRequestToRemoveTeam(teamId, path, callback){
+async function postRequestToRemoveTeam(teamId, path, callback){
     let object = {
         script : {
-            inline : "ctx._source.teams.removeIf(v -> v == params.team);",
+            inline : "ctx._source.teams.removeIf(v -> v.id == params.team);",
             params : {
                 team : teamId
             }
@@ -106,5 +106,5 @@ function postRequestToRemoveTeam(teamId, path, callback){
         json: true,
         body: object
     }
-    request(options, callback)
+    return await rp(options)
 }

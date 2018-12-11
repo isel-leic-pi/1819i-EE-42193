@@ -82,3 +82,22 @@ function singleGroup(object){
     }
     return JSON.stringify(group)
 }
+
+function singleTeamMatches(object){
+    let group = {
+        id: object._id,
+        name: object._source.name,
+        description: object._source.description,
+        teams: object._source.teams
+    }
+    return JSON.stringify(group)
+}
+
+function multipleMatches(object){
+    console.log(object)
+    let groups = {
+        total_groups: object.hits.total,
+        groups: object.hits.hits.map(group => singleGroupForMapping(group))
+    }
+    return JSON.stringify(groups)
+}

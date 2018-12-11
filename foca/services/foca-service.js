@@ -2,7 +2,6 @@ let FootballData = require('../data/football-data')
 let footballData = new FootballData
 let FocaData = require('../data/foca-db')
 let focaData = new FocaData
-let count
 
 module.exports = class FocaService {
     
@@ -23,57 +22,45 @@ module.exports = class FocaService {
         return await footballData.getLeaguesById(league_id)
     }
 
-    getGroupList(callback){
-        focaData.getFavorites(callback)
+    async getGroupList(){
+        return await focaData.getFavorites()
     }
     
-    postGroup(name, description, callback){
-        focaData.postGroup(name, description, callback)
+    async postGroup(name, description){
+        return await focaData.postGroup(name, description)
     }
     
-    editGroup(name, description, groupId, callback){
-        focaData.putGroupById(name, description, groupId, callback)
+    async editGroup(name, description, groupId){
+        return await focaData.putGroupById(name, description, groupId)
     }
     
-    getGroupById(groupId, callback){
-        focaData.getFavoriteGroupById(groupId, callback)
+    async getGroupById(groupId){
+        return await focaData.getFavoriteGroupById(groupId)
     }
     
-    addTeamToGroup(groupId, teamId, callback){
-        focaData.putTeamInGroup(groupId, teamId, callback)
+    async addTeamToGroup(groupId, teamId){
+        //verificar se a equipa existe
+        let team = await footballData.getTeam(teamId)
+        let teamObj = {id: teamId, name: team.name}
+        return await focaData.putTeamInGroup(groupId, teamObj)
     }
     
-    removeTeamFromGroup(groupId, teamId, callback){
-        focaData.deleteTeamFromGroup(groupId, teamId, callback)
+    async removeTeamFromGroup(groupId, teamId){
+        return await focaData.deleteTeamFromGroup(groupId, teamId)
     }
 
-    getMatchesByGroup(groupId, queryString, callback){
-        focaData.getFavoriteGroupById(groupId, function (err, data) {
-            let matches = []
-            if(err) {
-                callback(err,[])
-            } else {
-                let teams = data.body._source.teams
-                count = teams.length
-                //mudar para map
-                teams.forEach(teamId => {
-                    footballData.getMatchesByTeamId(teamId, queryString, function (err, data){
-                        if(err){
-                            callback(err,[])
-                        }
-                        else {
-                            matches.push(data)
-                            cb(callback,err,matches)
-                        }
-                    })
-                });
+    async getMatchesByGroup(groupId, queryString){
+        let matches = []
+        try{
+            let groupObj = await focaData.getFavoriteGroupById(groupId)
+            
+            let teams = groupObj._source.teams.map(team => team.id)
+            for(let i = 0; i < teams.length; i++){
+                matches[i] = await footballData.getMatchesByTeamId(teams[i], queryString)
             }
-        })
+            return await matches
+        } catch (err) {
+            return []
+        }
     }
-}
-
-//TODO: find a better way to call the final callback when every data is available
-function cb(finalCallback, err, data){
-    if(--count == 0)
-        finalCallback(err,data);
 }

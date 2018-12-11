@@ -13,13 +13,12 @@ module.exports = class FootballDatabase {
         return getRequest(`competitions/${leagueId}`);
     }
 
-    //Alterar esta funcao para retornar o nome de uma equipa
-    getTeamById(teamId, callback){
-        getRequest1(`teams/${teamId}`, callback)
+    getTeam(teamId){
+        return getRequest(`teams/${teamId}`)
     }
 
-    getMatchesByTeamId1(teamId, queryString, callback){
-        getRequest(`teams/${teamId}/matches/`, callback, queryString)
+    getMatchesByTeamId(teamId, queryString){
+        return getRequest(`teams/${teamId}/matches/`, queryString)
     }
 }
 
