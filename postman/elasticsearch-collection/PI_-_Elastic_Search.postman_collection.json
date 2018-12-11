@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "25c26827-9f5c-40e0-b636-506721e5a804",
+		"name": "PI - Elastic Search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Drop Database",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/favorites",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"favorites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create and Fill DB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Random Group\",\n\t\"description\" : \"Random group description\",\n\t\"teams\" : [ \n\t\t{\n\t\t\t\"id\": 15,\n\t\t\t\"name\": \"1. FSV Mainz 05\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"name\": \"SC Freiburg\"\n\t\t} \n\t]\n}"
+				},
+				"url": {
+					"raw": "{{baseUri}}/favorites/groups",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"favorites",
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Groups",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/favorites/groups/_search",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"favorites",
+						"groups",
+						"_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Group",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Example Group\",\n\t\"description\" : \"Example group description\",\n\t\"teams\" : [\n\t\t{\n\t\t\t\"id\": 15,\n\t\t\t\"name\": \"1. FSV Mainz 05\"\n\t\t}\n\t]\n}\n"
+				},
+				"url": {
+					"raw": "{{baseUri}}/favorites/groups/fQ12345678eFV2B6FlqS",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"favorites",
+						"groups",
+						"fQ12345678eFV2B6FlqS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Group Info",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"script\" : {\r\n\t\t\"inline\" : \"ctx._source.name = params.name; ctx._source.description = params.description;\",\r\n\t\t\"params\" : {\r\n\t\t\t\"name\" : \"Example Group - Updated\",\r\n\t\t\t\"description\" : \"Example group description - Updated\"\r\n\t\t}\r\n\t}\r\n}"
+				},
+				"url": {
+					"raw": "{{baseUri}}/favorites/groups/fQ12345678eFV2B6FlqS/_update",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"favorites",
+						"groups",
+						"fQ12345678eFV2B6FlqS",
+						"_update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"script\" : {\r\n\t\t\"inline\" : \"if(!ctx._source.teams.contains(params.team)) ctx._source.teams.add(params.team);\",\r\n\t\t\"params\" : {\r\n\t\t\t\"team\" : {\r\n\t\t\t\t\"id\": 17,\r\n\t\t\t\t\"name\": \"SC Freiburg\"\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}"
+				},
+				"url": {
+					"raw": "{{baseUri}}/favorites/groups/fQ12345678eFV2B6FlqS/_update",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"favorites",
+						"groups",
+						"fQ12345678eFV2B6FlqS",
+						"_update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
