@@ -22,22 +22,6 @@ module.exports = class FootballDatabase {
     }
 }
 
-function getRequest1(path, callback, queryString){
-    const options = {
-        url: baseUrl + path,
-        headers: {
-          'User-Agent': 'request',
-          'X-Auth-Token': 'e00d1382199c4ec8918e3c5b6a028c16'
-        },
-        json: true
-    }
-
-    if(typeof queryString !== undefined){
-        options.qs = queryString  
-    }
-    request(options, callback);
-}
-
 async function getRequest(path, queryString){
     const options = {
         url: baseUrl + path,
