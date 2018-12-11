@@ -163,15 +163,17 @@ async function getMatchesByGroup(req, res) {
     try{
         let groupMatches = await focaService.getMatchesByGroup(req.params.groupId, req.query)
         if(groupMatches.length == 0) {
-            //TO FINISH
+            res.statusCode = 500
+            res.setHeader('content-type', 'application/json')
+            let statusObj = statusCodeManager(500)
             res.end(responseBuilder.errorMsg(statusObj))
             return
         }
         res.statusCode = 200
         res.setHeader('content-type', 'application/json')
-        //res.end(responseBuilder.multipleMatches(groupMatches))
-        res.end(JSON.stringify(groupMatches))
+        res.end(responseBuilder.multipleMatches(groupMatches))
     } catch (err) {
+        console.log(err)
         let statusObj = statusCodeManager(err.statusCode)
         res.statusCode = statusObj.statusCode
         res.setHeader('content-type', 'application/json')
@@ -214,12 +216,16 @@ async function removeTeamFromGroup(req, res) {
 }
 
 function statusCodeManager(statusCode){
-    if(statusCode === 403)
-        return {statusCode: 403, message: 'The resource you are looking for is restricted.'}
-    
-    if(statusCode >= 400 && statusCode < 418)
-        return {statusCode: 404, message: 'The resource you are looking for does not exist.'}
-
-    if(statusCode >= 500 && statusCode < 506)
-        return {statusCode: 502, message: 'The information provider service is unavailable.'}
+    switch(statusCode) {
+        case 403:
+            return {statusCode: 403, message: 'The resource you are looking for is restricted.'}
+        case 500:
+            return {statusCode: 500, message: 'Something went wrong whilst trying to get your data.'}
+        case statusCode >= 400 && statusCode < 418:
+            return {statusCode: 404, message: 'The resource you are looking for does not exist.'}
+        case statusCode >= 501 && statusCode < 506:
+            return {statusCode: 502, message: 'The information provider service is unavailable.'}
+        default:
+            return {statusCode: 404, message: 'The resource you are looking for does not exist.'}
+    }
 }

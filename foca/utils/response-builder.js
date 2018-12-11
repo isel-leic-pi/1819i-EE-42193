@@ -42,7 +42,7 @@ function singleLeagueForMapping(object){
 function multipleLeagues(object){
     let leagues = {
         total_leagues: object.count,
-        leagues: object.competitions.map(comp => singleLeagueForMapping(comp))
+        leagues: object.competitions.map(singleLeagueForMapping)
     }
     return JSON.stringify(leagues)
 }
@@ -60,7 +60,7 @@ function singleGroupForMapping(object){
 function multipleGroups(object){
     let groups = {
         total_groups: object.hits.total,
-        groups: object.hits.hits.map(group => singleGroupForMapping(group))
+        groups: object.hits.hits.map(singleGroupForMapping)
     }
     return JSON.stringify(groups)
 }
@@ -83,21 +83,31 @@ function singleGroup(object){
     return JSON.stringify(group)
 }
 
-function singleTeamMatches(object){
-    let group = {
-        id: object._id,
-        name: object._source.name,
-        description: object._source.description,
-        teams: object._source.teams
+function matchesForMapping(object){
+    let match = {
+        match_id: object.id,
+        league_id: object.competition.id,
+        date: object.utcDate,
+        status: object.status,
+        home_team: object.homeTeam.name,
+        away_team: object.awayTeam.name
     }
-    return JSON.stringify(group)
+    return match
+}
+
+function singleTeamMatchesForMapping(object){
+    let team = {
+        team_id: object.teamId,
+        total_matches: object.matches.length,
+        matches: object.matches.map(matchesForMapping)
+    }
+    return team
 }
 
 function multipleMatches(object){
-    console.log(object)
-    let groups = {
-        total_groups: object.hits.total,
-        groups: object.hits.hits.map(group => singleGroupForMapping(group))
+    let matchesByTeam = {
+        total_teams: object.length,
+        teams: object.map(singleTeamMatchesForMapping)
     }
-    return JSON.stringify(groups)
+    return JSON.stringify(matchesByTeam)
 }
