@@ -1,4 +1,3 @@
-let request = require('request')
 let rp = require('request-promise')
 
 const baseUrl = 'https://api.football-data.org/v2/'
