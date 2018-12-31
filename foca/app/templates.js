@@ -2,6 +2,7 @@ const handlebars = require('../node_modules/handlebars/dist/handlebars')
 
 const nop = function () { }
 const leaguesScript = require('./leagues-script')
+const leagueScript = require('./league-script')
 
 const compiledTemplates = {
     home: syncToAsync(handlebars.compile(require('./templates/home.hbs'))),
@@ -17,12 +18,16 @@ function syncToAsync(syncF) {
 }
 
 module.exports = {
-    home: {
+    'home': {
       view: compiledTemplates.home,
       script: nop
     },
-    leagues: {
+    'leagues': {
         view: compiledTemplates.leaguesBase,
         script: () => leaguesScript(compiledTemplates.multipleLeagues)
-      }
+    },
+    'single-leagues': {
+        view: compiledTemplates.leaguesBase,
+        script: () => leagueScript(compiledTemplates.singleLeague)
+    }
   }

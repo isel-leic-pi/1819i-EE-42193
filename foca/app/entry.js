@@ -12,6 +12,9 @@ require('./navigation.js')
     async function showView() {
         let [view, ...params] = window.location.hash.split('/')
         view = view.substring(1)
+        if(params[0] && view !== 'home'){
+            view = 'single-' + view
+        }
 
         let viewTemplate = templates[view]
 
