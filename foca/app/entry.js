@@ -1,33 +1,25 @@
 require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
+const templates = require('./templates')
+require('./nav.js')
 
-/*document.body.innerHTML = `
-    <div class="container">
-    <h1>FOca Application</h1>
-    <div class="b4-main"></div>
-    <div class="container"></div>
-    <div class="b4-alerts"></div>
-    </div>
-`;*/
+;
 
-/*
-const mainElement = document.body.querySelector('.b4-main');
+(function () {  
+    let mainContent = document.querySelector('#mainContent')
+    window.addEventListener('hashchange', showView)
+    showView()
+  
+    async function showView() {
+        let [view, ...params] = window.location.hash.split('/')
+        view = view.substring(1)
 
-mainElement.innerHTML = `
-    <div class="jumbotron">
-    <h1>Welcome!</h1>
-    <p>Foca is an application about football.</p>
-    </div>
-`;
+        let viewTemplate = templates[view]
 
-const alertsElement = document.body.querySelector('.b4-alerts');
-
-alertsElement.innerHTML = `
-    <div class="alert alert-success" role="alert">
-        <strong>Success!</strong> Bootstrap is working.
-    </div>
-`;
-*/
-
-const mainContent = document.body.querySelector('#mainContent');
-
-mainContent.innerHTML = `<h1>Este é o body (mainContent)</h1>`;
+        if(viewTemplate) {
+            mainContent.innerHTML = await viewTemplate.view.apply(null, params)
+            viewTemplate.script()
+        } else {
+            window.location.hash = '#welcome'
+        }
+    }
+})()

@@ -6,5 +6,11 @@
         "port": 9200,
         "index": "favorites",
         "type": "groups"
+    },
+    "es-auth": {
+        "host": "localhost",
+        "port": 9200,
+        "index": "users",
+        "type": "details"
     }
 }
