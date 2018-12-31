@@ -1,0 +1,11 @@
+<div class="card-columns">
+    {{#each this}}
+    <div class="card bg-light mb-3" style="max-width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text">{{area}}</p>
+            <a href="#leagues/{{league_id}}" class="btn btn-primary">Details</a>
+        </div>
+    </div>
+    {{/each}}
+</div>

@@ -1,6 +1,6 @@
 require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
 const templates = require('./templates')
-require('./nav.js')
+require('./navigation.js')
 
 ;
 
@@ -19,7 +19,7 @@ require('./nav.js')
             mainContent.innerHTML = await viewTemplate.view.apply(null, params)
             viewTemplate.script()
         } else {
-            window.location.hash = '#welcome'
+            window.location.hash = '#home'
         }
     }
 })()
