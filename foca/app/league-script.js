@@ -12,6 +12,7 @@ module.exports = function (leagueTemplate) {
     function processResponse(res) {
         if (!res.ok) {
             showSearchError(res.status)
+            throw 'error'
         }
         return res.json()
     }
@@ -23,7 +24,6 @@ module.exports = function (leagueTemplate) {
 
     function showSearchError(status_code) {
         if(status_code == 403){
-            console.log('inside 403 if')
             results.innerHTML = "You can't access the information for that league.";
         }
         else if(status_code == 404){

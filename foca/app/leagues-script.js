@@ -10,6 +10,7 @@ module.exports = function (leaguesTemplate) {
     function processResponse(res) {
         if (!res.ok) {
             showSearchError()
+            throw 'error'
         }
         return res.json()
     }
