@@ -5,11 +5,11 @@ module.exports = function (leaguesTemplate) {
     fetch(url)
         .then(processResponse)
         .then(showLeaguesView)
-        .catch(showSearchError)
+        .catch(showError)
 
     function processResponse(res) {
         if (!res.ok) {
-            showSearchError()
+            showError()
             throw 'error'
         }
         return res.json()
@@ -30,7 +30,7 @@ module.exports = function (leaguesTemplate) {
         }
     }
 
-    function showSearchError(e) {
+    function showError(e) {
         results.innerHTML = "Leagues not available. Try again later...";
     }
 }

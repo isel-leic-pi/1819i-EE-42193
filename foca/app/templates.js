@@ -3,12 +3,17 @@ const handlebars = require('../node_modules/handlebars/dist/handlebars')
 const nop = function () { }
 const leaguesScript = require('./leagues-script')
 const leagueScript = require('./league-script')
+const groupsScript = require('./groups-script')
+//const groupScript = require('./group-script')
 
 const compiledTemplates = {
     home: syncToAsync(handlebars.compile(require('./templates/home.hbs'))),
     leaguesBase: syncToAsync(handlebars.compile(require('./templates/leagues-base.hbs'))),
     multipleLeagues: syncToAsync(handlebars.compile(require('./templates/multiple-leagues.hbs'))),
-    singleLeague: syncToAsync(handlebars.compile(require('./templates/single-league.hbs')))
+    singleLeague: syncToAsync(handlebars.compile(require('./templates/single-league.hbs'))),
+    groupsBase: syncToAsync(handlebars.compile(require('./templates/groups-base.hbs'))),
+    multipleGroups: syncToAsync(handlebars.compile(require('./templates/multiple-groups.hbs'))),
+    singleGroups: syncToAsync(handlebars.compile(require('./templates/single-groups.hbs')))
 }
 
 function syncToAsync(syncF) {
@@ -29,5 +34,9 @@ module.exports = {
     'single-leagues': {
         view: compiledTemplates.leaguesBase,
         script: () => leagueScript(compiledTemplates.singleLeague)
+    },
+    'groups': {
+        view: compiledTemplates.groupsBase,
+        script: () => groupsScript(compiledTemplates.multipleGroups)
     }
   }

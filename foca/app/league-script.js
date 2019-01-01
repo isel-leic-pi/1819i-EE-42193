@@ -7,11 +7,11 @@ module.exports = function (leagueTemplate) {
     fetch(url)
         .then(processResponse)
         .then(showLeagueView)
-        .catch(showSearchError)
+        .catch(showError)
 
     function processResponse(res) {
         if (!res.ok) {
-            showSearchError(res.status)
+            showError(res.status)
             throw 'error'
         }
         return res.json()
@@ -22,7 +22,7 @@ module.exports = function (leagueTemplate) {
         results.innerHTML = res
     }
 
-    function showSearchError(status_code) {
+    function showError(status_code) {
         if(status_code == 403){
             results.innerHTML = "You can't access the information for that league.";
         }
