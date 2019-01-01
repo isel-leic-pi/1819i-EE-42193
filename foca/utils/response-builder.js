@@ -44,6 +44,7 @@ function multipleLeagues(object){
         total_leagues: object.count,
         leagues: object.competitions.map(singleLeagueForMapping)
     }
+    leagues.leagues = sortByKey(leagues.leagues, 'league_id')
     return JSON.stringify(leagues)
 }
 
@@ -110,4 +111,11 @@ function multipleMatches(object){
         teams: object.map(singleTeamMatchesForMapping)
     }
     return JSON.stringify(matchesByTeam)
+}
+
+function sortByKey(array, key){
+    return array.sort(function(a, b){
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
 }
