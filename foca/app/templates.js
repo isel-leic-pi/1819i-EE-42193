@@ -5,6 +5,8 @@ const leaguesScript = require('./leagues-script')
 const leagueScript = require('./league-script')
 const groupsScript = require('./groups-script')
 const groupScript = require('./group-script')
+const loginScript = require('./login-script')
+const signupScript = require('./signup-script')
 
 const compiledTemplates = {
     home: syncToAsync(handlebars.compile(require('./templates/home.hbs'))),
@@ -48,10 +50,10 @@ module.exports = {
     },
     'login': {
         view: compiledTemplates.login,
-        script: nop
+        script: () => loginScript()
     },
     'signup': {
         view: compiledTemplates.signup,
-        script: nop
+        script: () => signupScript()
     }
 }

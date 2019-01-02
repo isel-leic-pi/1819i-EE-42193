@@ -1,14 +1,16 @@
 module.exports = function () {
-    const login = document.querySelector('#login')
+    const signup = document.querySelector('#signup')
+    const fullname = document.querySelector('#fullname')
     const username = document.querySelector("#username")
     const password = document.querySelector("#password")
 
-    login.addEventListener("click", event => { event.preventDefault() }, true)
-    login.onclick = loginClick;
+    signup.addEventListener("click", event => { event.preventDefault() }, true)
+    signup.onclick = signupClick;
 
-    function loginClick(event){
-        const url = `http://localhost:8080/api/auth/login`
+    function signupClick(event){
+        const url = `http://localhost:8080/api/auth/signup`
         let bodyObj = {
+            fullname: fullname.value,
             username: username.value,
             password: password.value
         }
