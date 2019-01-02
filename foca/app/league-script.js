@@ -29,5 +29,8 @@ module.exports = function (leagueTemplate) {
         else if(status_code == 404){
             results.innerHTML = "That league does not exist. Try another one...";
         }
+        else {
+            results.innerHTML = "Something went wrong :( Try again later...";
+        }
     }
 }

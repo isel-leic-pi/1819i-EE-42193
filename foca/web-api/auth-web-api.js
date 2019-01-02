@@ -1,5 +1,6 @@
 const passport = require('passport')
 const authService = require('../services/auth-service')
+const responseBuilder = require('../utils/response-builder')
 
 module.exports = (app) => {
     passport.serializeUser(serializeUser)
@@ -47,6 +48,7 @@ function signup(req, resp, next) {
                 else resp.json(user)
             })
         })
+        .catch(() => errorHandler(resp))
 }
 
 function serializeUser(user, done) {
@@ -58,4 +60,11 @@ function deserializeUser(userId, done) {
         .getUser(userId)
         .then(user => done(null, user))
         .catch(err => done(err))
+}
+
+function errorHandler(res) {
+    let statusObj = {statusCode: 502, message: 'The information provider service is unavailable.'}
+    res.statusCode = statusObj.statusCode
+    res.setHeader('content-type', 'application/json')
+    res.end(responseBuilder.errorMsg(statusObj))
 }
