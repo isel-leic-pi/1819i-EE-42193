@@ -1,7 +1,7 @@
 let rp = require('request-promise')
 const config = require('../foca-config.json')
 
-const baseUrl = `http://${config.es-auth.host}:${config.es-auth.port}/${config.es-auth.index}/${config.es-auth.type}`
+const baseUrl = `http://${config.es_auth.host}:${config.es_auth.port}/${config.es_auth.index}/${config.es_auth.type}`
 
 module.exports = class AuthDatabase {
 

@@ -7,7 +7,7 @@
         "index": "favorites",
         "type": "groups"
     },
-    "es-auth": {
+    "es_auth": {
         "host": "localhost",
         "port": 9200,
         "index": "users",
