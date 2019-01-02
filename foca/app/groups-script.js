@@ -64,6 +64,7 @@ module.exports = function (groupsTemplate) {
     }
 
     function showError(e) {
+        create.disabled = true
         results.innerHTML = "Groups not available. Try again later...";
     }
 }

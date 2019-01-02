@@ -1,0 +1,19 @@
+<div class="card">
+    <h5 class="card-header" id="nameDetail">{{name}}</h5>
+    <div class="card-body">
+        <p class="card-text" id="descriptionDetail">{{description}}</p>
+        <p class="card-text"><strong>Teams:</strong></p>
+        <div class="form-group mx-sm-3 mb-2" id="teamsView">
+            {{#each teams}}
+            <p class="card-text" id="teamElement">
+                {{name}}
+                <button type="button" class="btn btn-danger" id="deleteButton" value="{{id}}">Delete team</button>
+            </p>
+            {{/each}}
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control col-lg-2" id="inputTeam" placeholder="id"/>
+            <button type="submit" class="btn btn-success" id="addTeamButton">Add team</button>
+        </div>
+    </div>
+</div>

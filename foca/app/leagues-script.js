@@ -24,8 +24,8 @@ module.exports = function (leaguesTemplate) {
         
         function handleClick(card, idx) {
             card.onclick = function () {
-            const hash = `#leagues/${leagues[idx].league_id}`
-            window.location.hash = hash
+                const hash = `#leagues/${leagues[idx].league_id}`
+                window.location.hash = hash
             }
         }
     }
