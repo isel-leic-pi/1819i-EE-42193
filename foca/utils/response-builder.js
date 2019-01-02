@@ -99,6 +99,7 @@ function matchesForMapping(object){
 function singleTeamMatchesForMapping(object){
     let team = {
         team_id: object.teamId,
+        team_name: object.team_name,
         total_matches: object.matches.length,
         matches: object.matches.map(matchesForMapping)
     }

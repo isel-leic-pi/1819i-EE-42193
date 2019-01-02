@@ -13,7 +13,8 @@ const compiledTemplates = {
     singleLeague: syncToAsync(handlebars.compile(require('./templates/single-league.hbs'))),
     groupsBase: syncToAsync(handlebars.compile(require('./templates/groups-base.hbs'))),
     multipleGroups: syncToAsync(handlebars.compile(require('./templates/multiple-groups.hbs'))),
-    singleGroup: syncToAsync(handlebars.compile(require('./templates/single-group.hbs')))
+    singleGroup: syncToAsync(handlebars.compile(require('./templates/single-group.hbs'))),
+    matches: syncToAsync(handlebars.compile(require('./templates/matches.hbs')))
 }
 
 function syncToAsync(syncF) {
@@ -41,6 +42,6 @@ module.exports = {
     },
     'single-groups': {
         view: compiledTemplates.groupsBase,
-        script: () => groupScript(compiledTemplates.singleGroup)
+        script: () => groupScript(compiledTemplates.singleGroup,compiledTemplates.matches)
     }
   }

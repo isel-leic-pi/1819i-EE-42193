@@ -1,4 +1,4 @@
-module.exports = function (groupTemplate) {
+module.exports = function (groupTemplate, matchesTemplate) {
     const edit = document.querySelector("#create")
     edit.innerHTML = 'Edit group'
     const name = document.querySelector("#name")
@@ -32,12 +32,33 @@ module.exports = function (groupTemplate) {
             //SOLUTION THAT IS NOT BEING USED BECAUSE WE CAN´T GET THE TEAM NAME
             /*let p = document.createElement('p')
             p.className = 'card-text';
-    
             p.innerHTML =`
                 TEAM_NAME
                 <button type="button" class="btn btn-danger" id="deleteButton" value="${textBox.value}">Delete team</button>
             `
             document.querySelector("#teamsView").appendChild(p)*/
+        }
+    }
+
+    function getMatches() {
+        const start_date = document.querySelector("#inputStartDate")
+        const end_date = document.querySelector("#inputEndDate")
+        if(!start_date.value || !end_date.value) return;
+
+        const url = `http://localhost:8080/foca/favorites/groups/${groupId}/matches?dateFrom=${start_date.value}&dateTo=${end_date.value}`
+        fetch(url)
+            .then(processResponse)
+            .then(addMatchesToView)
+            .catch(showMatchesError)
+
+        async function addMatchesToView(matches) {
+            matches = matches.teams
+            const res = await matchesTemplate(matches)
+            const matchesContent = document.querySelector("#matchesContent")
+            matchesContent.innerHTML = res
+
+            start_date.value = ''
+            end_date.value = ''
         }
     }
 
@@ -94,6 +115,8 @@ module.exports = function (groupTemplate) {
         }
 
         document.querySelector("#addTeamButton").onclick = addTeam
+
+        document.querySelector('#getMatchesButton').onclick = getMatches
     }
 
     function deleteTeam(teamId) {
@@ -119,6 +142,10 @@ module.exports = function (groupTemplate) {
 
     function showAddingError(e) {
         results.innerHTML = "Couldn't add team...";
+    }
+
+    function showMatchesError(e) {
+        results.innerHTML = "Couldn't get the matches from these teams. Try again later...";
     }
 
     function showError(e) {

@@ -1,0 +1,14 @@
+{{#each this}}
+<div class="card text-center">
+    <h5 class="card-header">{{team_name}}</h5>
+    <div class="card-body">
+        {{#each matches}}
+        <p class="card-text"><strong>Match:</strong> {{home_team}} vs {{away_team}}</p>
+        <p class="card-text"><strong>Date:</strong> {{date}}</p>
+        <p class="card-text"><strong>Status:</strong> {{status}}</p>
+        <hr>
+        {{/each}}
+    </div>
+    <br>
+</div>
+{{/each}}

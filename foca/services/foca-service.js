@@ -57,6 +57,7 @@ module.exports = class FocaService {
             for(let i = 0; i < teams.length; i++){
                 matches[i] = await footballData.getMatchesByTeamId(teams[i], queryString)
                 matches[i].teamId = teams[i]
+                matches[i].team_name = groupObj._source.teams[i].name
             }
             return await matches
         } catch (err) {
