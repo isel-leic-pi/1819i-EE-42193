@@ -12,12 +12,7 @@ const host = config.host;
 const app = express()
 app.use(morgan('dev'))
 
-//app.use(bodyParser.urlencoded({ extended: false }))
-//app.use(bodyParser.json())
-
-//app.use(cookieParser())
-//app.use(express.json())
-
+app.use(express.json())
 app.use(expressSession({secret: 'keyboard cat', resave: false, saveUninitialized: true }))
 app.use('/', express.static(path.join(__dirname,"dist")))
 
