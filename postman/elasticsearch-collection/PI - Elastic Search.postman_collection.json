@@ -46,7 +46,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\" : \"Random Group\",\n\t\"description\" : \"Random group description\",\n\t\"teams\" : [ \n\t\t{\n\t\t\t\"id\": 15,\n\t\t\t\"name\": \"1. FSV Mainz 05\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"name\": \"SC Freiburg\"\n\t\t} \n\t]\n}"
+					"raw": "{\n\t\"name\" : \"Random Group\",\n\t\"description\" : \"Random group description\",\n\t\"username\" : \"valentimc\",\n\t\"teams\" : [ \n\t\t{\n\t\t\t\"id\": 15,\n\t\t\t\"name\": \"1. FSV Mainz 05\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"name\": \"SC Freiburg\"\n\t\t} \n\t]\n}"
 				},
 				"url": {
 					"raw": "{{baseUri}}/favorites/groups",
@@ -106,7 +106,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\" : \"Example Group\",\n\t\"description\" : \"Example group description\",\n\t\"teams\" : [\n\t\t{\n\t\t\t\"id\": 15,\n\t\t\t\"name\": \"1. FSV Mainz 05\"\n\t\t}\n\t]\n}\n"
+					"raw": "{\n\t\"name\" : \"Example Group\",\n\t\"description\" : \"Example group description\",\n\t\"username\" : \"daskdadi\",\n\t\"teams\" : [\n\t\t{\n\t\t\t\"id\": 15,\n\t\t\t\"name\": \"1. FSV Mainz 05\"\n\t\t}\n\t]\n}\n"
 				},
 				"url": {
 					"raw": "{{baseUri}}/favorites/groups/fQ12345678eFV2B6FlqS",
@@ -179,6 +179,117 @@
 						"groups",
 						"fQ12345678eFV2B6FlqS",
 						"_update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Drop Users Database",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/users",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create and Fill Users DB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullname\" : \"Valentim Caires\",\n\t\"username\" : \"valentimc\",\n\t\"password\" : \"123456\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUri}}/users/details",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"users",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add User",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullname\" : \"David Soares\",\n\t\"username\" : \"daskdadi\",\n\t\"password\" : \"123456\"\n}\n"
+				},
+				"url": {
+					"raw": "{{baseUri}}/users/details/fQ12345123eFV2B6FlqS",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"users",
+						"details",
+						"fQ12345123eFV2B6FlqS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUri}}/users/details/_search",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"users",
+						"details",
+						"_search"
 					]
 				}
 			},
