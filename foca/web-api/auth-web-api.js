@@ -23,26 +23,15 @@ function getSession(req, resp, next) {
 }
 
 function login(req, resp, next) {
-    let body = [];
-
-    req.on('data', (chunk) => {
-        body.push(chunk);
-    }).on('end', () => {
-        body = Buffer.concat(body).toString();
-        callLogin(JSON.parse(body));
-    });
-
-    function callLogin(body){
-        authService
-            .authenticate(body.username, body.password)
-            .then(user => {
-                req.login(user, (err) => {
-                    if (err) next(err)
-                    else resp.json(user)
-                })
+    authService
+        .authenticate(req.body.username, req.body.password)
+        .then(user => {
+            req.login(user, (err) => {
+                if (err) next(err)
+                else resp.json(user)
             })
-            .catch(err => next(err))
-    }
+        })
+        .catch(err => next(err))
 }
 
 function logout(req, resp, next) {

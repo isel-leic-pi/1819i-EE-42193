@@ -9,6 +9,7 @@ module.exports = (app) => {
     app.get('/favicon.ico', favicon)
     app.get('/foca/leagues', getLeagues)
     app.get('/foca/leagues/:leagueId', getLeaguesById)
+    //app.use('/foca/favorites/groups', checkAuth)
     app.get('/foca/favorites/groups', getGroupList)
     app.post('/foca/favorites/groups', postGroup)
     app.put('/foca/favorites/groups/:groupId', editGroup)
@@ -31,6 +32,17 @@ function favicon(req, res) {
     res.setHeader('Content-Type', 'image/x-icon');
     fs.createReadStream(icon).pipe(res);   
 }
+
+/**
+ * Checks if user is authenticated
+ */
+/*function checkAuth(req, res, next){
+    if (req.user) {
+        next()
+    } else {
+        throw 'error'
+    }
+}*/
 
 /**
  * GET /foca/leagues -- lista das ligas
@@ -77,50 +89,28 @@ async function getGroupList(req, res) {
 /**
  *  POST /foca/favorites/groups -- criar um grupo
  */
-function postGroup(req, res) {
-    let body = [];
-
-    req.on('data', (chunk) => {
-        body.push(chunk);
-    }).on('end', () => {
-        body = Buffer.concat(body).toString();
-        callPostGroup(JSON.parse(body));
-    });
-
-    async function callPostGroup(bodyObj){
-        try{
-            let info = await focaService.postGroup(bodyObj.name, bodyObj.description)
-            res.statusCode = 201
-            res.setHeader('content-type', 'application/json')
-            res.end(responseBuilder.createdOrEditedGroup(info))
-        } catch (err) {
-            errorHandler(err,res)
-        }
+async function postGroup(req, res) {
+    try{
+        let info = await focaService.postGroup(req.body.name, req.body.description)
+        res.statusCode = 201
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.createdOrEditedGroup(info))
+    } catch (err) {
+        errorHandler(err,res)
     }
 }
 
 /**
  *  PUT /foca/favorites/groups/:groupId -- editar um grupo
  */
-function editGroup(req, res) {
-    let body = [];
-
-    req.on('data', (chunk) => {
-        body.push(chunk);
-    }).on('end', () => {
-        body = Buffer.concat(body).toString();
-        callEditGroup(JSON.parse(body));
-    });
-
-    async function callEditGroup(bodyObj){
-        try{
-            let info = await focaService.editGroup(bodyObj.name, bodyObj.description, req.params.groupId)
-            res.statusCode = 200
-            res.setHeader('content-type', 'application/json')
-            res.end(responseBuilder.createdOrEditedGroup(info))
-        } catch (err) {
-            errorHandler(err,res)
-        }
+async function editGroup(req, res) {
+    try{
+        let info = await focaService.editGroup(req.body.name, req.body.description, req.params.groupId)
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(responseBuilder.createdOrEditedGroup(info))
+    } catch (err) {
+        errorHandler(err,res)
     }
 }
 
