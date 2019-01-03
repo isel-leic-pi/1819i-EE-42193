@@ -36,22 +36,13 @@ function login(req, resp, next) {
 
 function logout(req, resp, next) {
     req.logout()
-    getSession(req, resp, next)
+    resp.statusCode = 200
+    resp.end()
 }
 
 function signup(req, resp, next) {
-    let body = [];
-
-    req.on('data', (chunk) => {
-        body.push(chunk);
-    }).on('end', () => {
-        body = Buffer.concat(body).toString();
-        callSignup(JSON.parse(body));
-    });
-
-    function callSignup(body){
-        authService
-        .createUser(body.fullname, body.username, body.password)
+    authService
+        .createUser(req.body.fullname, req.body.username, req.body.password)
         .then(user => {
             req.login(user, (err) => {
                 if (err) next(err)
@@ -59,7 +50,6 @@ function signup(req, resp, next) {
             })
         })
         .catch(() => errorHandler(resp))
-    }
 }
 
 function serializeUser(user, done) {

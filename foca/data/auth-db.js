@@ -18,26 +18,30 @@ module.exports = class AuthDatabase {
     }
 }
 
-async function authenticate(username) {
+function authenticate(username) {
     const options = {
         method: 'GET',
         url: `${baseUrl}/_search?q=username:${username}`,
         json: true
     }
-    return await rp(options)
+    return rp(options)
 }
 
-async function getUser(userId){
+function getUser(userId){
     const options = {
         method: 'GET',
         url: `${baseUrl}/${userId}`,
         json: true
     }
-    return await rp(options)
+    return rp(options)
 }
 
 async function createUser(fullname, username, password){
-    const user = { fullname, username, password }
+    const user = { 
+        fullname: fullname,
+        username: username,
+        password: password
+    }
     const options = {
         method: 'POST',
         url: baseUrl,
@@ -45,7 +49,7 @@ async function createUser(fullname, username, password){
         body: user
     }
     const resp = await rp(options)
-    await rp.post(`${baseUrl}/_refresh`)
+    await rp.post(`${baseUrl.substring(0,baseUrl.lastIndexOf('/'))}/_refresh`)
     user._id = resp._id
     return user
 }

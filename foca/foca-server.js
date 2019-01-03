@@ -12,12 +12,13 @@ const host = config.host;
 const app = express()
 app.use(morgan('dev'))
 
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(expressSession({secret: 'keyboard cat', resave: false, saveUninitialized: true }))
 app.use('/', express.static(path.join(__dirname,"dist")))
 
-foca_api(app)
 auth_api(app)
+foca_api(app)
 
 app.listen(port, host, () => {
     console.log('Server listening on port ' + port + ` -> http://${host}:${port}/`)

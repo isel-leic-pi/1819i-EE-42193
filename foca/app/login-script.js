@@ -21,11 +21,12 @@ module.exports = function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(bodyObj)
+            body: JSON.stringify(bodyObj),
+            credentials: 'same-origin'
         }
         fetch(url, options)
             .then(processResponse)
-            .then(() => {loggedUsername.innerHTML = username.value})
+            .then(updateView)
             .catch(showError)
     }
 
@@ -34,6 +35,26 @@ module.exports = function () {
             throw 'error'
         }
         return res.json()
+    }
+
+    function updateView() {
+        loggedUsername.innerHTML = username.value
+        window.location.hash = `#groups`
+        let li = document.createElement('li')
+        li.className = 'nav-item';
+        li.innerHTML =`
+            <a class="nav-link" href="/">Logout</a>
+        `
+        const navbar = document.querySelector("#navigationBar")
+        navbar.appendChild(li)
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        }
+        navbar.onclick = () => fetch('http://localhost:8080/api/auth/logout', options)
     }
 
     function showError(status_code) {

@@ -58,7 +58,7 @@ function singleGroupForMapping(object){
     return group
 }
 
-function multipleGroups(object){
+function multipleGroups(object, user){
     let groups = {
         total_groups: object.hits.total,
         groups: object.hits.hits.map(singleGroupForMapping)

@@ -9,7 +9,6 @@ module.exports = {
 
 async function authenticate(username, password) {
     return authData.authenticate(username)
-        .then(body => JSON.parse(body))
         .then(obj => {
             if(obj.hits.hits.length == 0) 
             throw {'statusCode': 404, 'err': 'Username not found!' }
@@ -22,9 +21,8 @@ async function authenticate(username, password) {
         })   
 }
 
-async function getUser(userId) {
+function getUser(userId) {
     return authData.getUser(userId)
-        .then(body => JSON.parse(body))
         .then(obj => { return {
             '_id': obj._id,
             'fullname': obj._source.fullname,
@@ -32,6 +30,6 @@ async function getUser(userId) {
         }})
 }
 
-async function createUser(fullname, username, password) {
+function createUser(fullname, username, password) {
     return authData.createUser(fullname, username, password)
 }

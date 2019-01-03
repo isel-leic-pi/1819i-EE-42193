@@ -6,11 +6,12 @@ module.exports = function () {
     const username = document.querySelector("#username")
     const password = document.querySelector("#password")
 
+    const loggedUsername = document.querySelector("#loggedUsername")
+
     signup.addEventListener("click", event => { event.preventDefault() }, true)
     signup.onclick = signupClick;
 
     function signupClick(event){
-        console.log("inside signupClick")
         const url = `http://localhost:8080/api/auth/signup`
         let bodyObj = {
             fullname: fullname.value,
@@ -22,12 +23,14 @@ module.exports = function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(bodyObj)
+            body: JSON.stringify(bodyObj),
+            credentials: 'same-origin'
         }
         fetch(url, options)
             .then(processResponse)
             .then( () => {
-                util.showAlert("You have succesfully signed up", "success");
+                loggedUsername.innerHTML = username.value
+                window.location.hash = `#groups`
             })
             .catch(showError)
     }

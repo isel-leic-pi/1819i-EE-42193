@@ -22,12 +22,12 @@ module.exports = class FocaService {
         return await footballData.getLeaguesById(league_id)
     }
 
-    async getGroupList(){
-        return await focaData.getFavorites()
+    async getGroupList(username){
+        return await focaData.getFavorites(username)
     }
     
-    async postGroup(name, description){
-        return await focaData.postGroup(name, description)
+    async postGroup(name, description, username){
+        return await focaData.postGroup(name, description, username)
     }
     
     async editGroup(name, description, groupId){

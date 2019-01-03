@@ -9,7 +9,6 @@ module.exports = (app) => {
     app.get('/favicon.ico', favicon)
     app.get('/foca/leagues', getLeagues)
     app.get('/foca/leagues/:leagueId', getLeaguesById)
-    //app.use('/foca/favorites/groups', checkAuth)
     app.get('/foca/favorites/groups', getGroupList)
     app.post('/foca/favorites/groups', postGroup)
     app.put('/foca/favorites/groups/:groupId', editGroup)
@@ -32,17 +31,6 @@ function favicon(req, res) {
     res.setHeader('Content-Type', 'image/x-icon');
     fs.createReadStream(icon).pipe(res);   
 }
-
-/**
- * Checks if user is authenticated
- */
-/*function checkAuth(req, res, next){
-    if (req.user) {
-        next()
-    } else {
-        throw 'error'
-    }
-}*/
 
 /**
  * GET /foca/leagues -- lista das ligas
@@ -77,7 +65,7 @@ async function getLeaguesById(req, res) {
  */
 async function getGroupList(req, res) {
     try{
-        let groupsList = await focaService.getGroupList()
+        let groupsList = await focaService.getGroupList(req.user.username)
         res.statusCode = 200
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.multipleGroups(groupsList))
@@ -91,7 +79,7 @@ async function getGroupList(req, res) {
  */
 async function postGroup(req, res) {
     try{
-        let info = await focaService.postGroup(req.body.name, req.body.description)
+        let info = await focaService.postGroup(req.body.name, req.body.description, req.user.username)
         res.statusCode = 201
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.createdOrEditedGroup(info))

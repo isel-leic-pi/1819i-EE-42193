@@ -5,16 +5,16 @@ const baseUrl = `http://${config.es.host}:${config.es.port}/${config.es.index}/$
 
 module.exports = class FocaDatabase {
     
-    getFavorites(){
-        return getRequest(`/_search`)
+    getFavorites(username){
+        return getRequest(`/_search?q=username:${username}`)
     }
 
     getFavoriteGroupById(groupId){
         return getRequest(`/${groupId}`)
     }
 
-    postGroup(name, description){
-        return postRequest(name, description, ``)
+    postGroup(name, description, username){
+        return postRequest(name, description, ``, username)
     }
 
     putGroupById(name, description, groupId){
@@ -39,10 +39,11 @@ async function getRequest(path){
     return await rp(options)
 }
 
-async function postRequest(groupName, groupDescription, path){
+async function postRequest(groupName, groupDescription, path, username){
     let groupObj = {
         name: groupName,
         description: groupDescription,
+        username: username,
         teams:[]
     }
     const options = {
