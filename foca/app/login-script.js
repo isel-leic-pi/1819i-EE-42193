@@ -5,6 +5,8 @@ module.exports = function () {
     const username = document.querySelector("#username")
     const password = document.querySelector("#password")
 
+    const loggedUsername = document.querySelector("#loggedUsername")
+
     login.addEventListener("click", event => { event.preventDefault() }, true)
     login.onclick = loginClick;
 
@@ -23,6 +25,7 @@ module.exports = function () {
         }
         fetch(url, options)
             .then(processResponse)
+            .then(() => {loggedUsername.innerHTML = username.value})
             .catch(showError)
     }
 
