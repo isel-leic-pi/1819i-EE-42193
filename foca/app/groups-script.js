@@ -35,7 +35,7 @@ module.exports = function (groupsTemplate) {
 
     function processResponse(res) {
         if (!res.ok) {
-            throw 'error'
+            throw res.status
         }
         return res.json()
     }
@@ -63,8 +63,12 @@ module.exports = function (groupsTemplate) {
       results.innerHTML = "Couldn't create new group...";
     }
 
-    function showError(e) {
+    function showError(statusCode) {
         create.disabled = true
-        results.innerHTML = "Groups not available. Try again later...";
+        if(statusCode == 401){
+            results.innerHTML = "You must be logged in to check your groups..."
+        } else {
+            results.innerHTML = "Groups not available. Try again later..."
+        }
     }
 }

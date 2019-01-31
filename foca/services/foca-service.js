@@ -61,7 +61,7 @@ module.exports = class FocaService {
             }
             return await matches
         } catch (err) {
-            return []
+            throw err
         }
     }
 }

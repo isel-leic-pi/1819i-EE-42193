@@ -1,12 +1,8 @@
-const util = require('./error-utils.js')
-
 module.exports = function () {
     const signup = document.querySelector('#signup')
     const fullname = document.querySelector('#fullname')
     const username = document.querySelector("#username")
     const password = document.querySelector("#password")
-
-    const loggedUsername = document.querySelector("#loggedUsername")
 
     signup.addEventListener("click", event => { event.preventDefault() }, true)
     signup.onclick = signupClick;
@@ -28,11 +24,13 @@ module.exports = function () {
         }
         fetch(url, options)
             .then(processResponse)
-            .then( () => {
-                loggedUsername.innerHTML = username.value
-                window.location.hash = `#groups`
-            })
+            .then(updateView)
             .catch(showError)
+    }
+
+    function updateView() {
+        window.location.hash = `#groups`
+        location.reload(true)
     }
 
     function processResponse(res) {
@@ -43,6 +41,6 @@ module.exports = function () {
     }
 
     function showError(status_code) {
-        util.showAlert("Something went wrong :( Try again later...");
+        document.querySelector("#divAlerts").innerHTML = 'Something went wrong :( Try again later...'
     }
 }

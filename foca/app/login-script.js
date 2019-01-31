@@ -1,11 +1,7 @@
-const util = require('./error-utils.js')
-
 module.exports = function () {
     const login = document.querySelector('#login')
     const username = document.querySelector("#username")
     const password = document.querySelector("#password")
-
-    const loggedUsername = document.querySelector("#loggedUsername")
 
     login.addEventListener("click", event => { event.preventDefault() }, true)
     login.onclick = loginClick;
@@ -32,41 +28,52 @@ module.exports = function () {
 
     function processResponse(res) {
         if (!res.ok) {
-            throw 'error'
+            throw res.status
         }
         return res.json()
     }
 
     function updateView() {
-        loggedUsername.innerHTML = username.value
+        const loginButton = document.querySelector("#loginButtonItem")
+        const signupButton = document.querySelector("#signUpButtonItem")
+        const loggedUser = document.querySelector("#loggedUsername")
+        const logoutButton = document.querySelector("#logoutButtonItem")
+
+        loginButton.innerHTML = ``
+        signupButton.innerHTML = ``
+        loggedUser.innerHTML = `&nbsp; ${username.value} &nbsp;`
+        logoutButton.innerHTML = `<a class="nav-link" href="#home">Logout</a>`
+
+        logoutButton.addEventListener("click", event => { event.preventDefault() }, true)
+        logoutButton.onclick = logoutFunc
+
         window.location.hash = `#groups`
-        let li = document.createElement('li')
-        li.className = 'nav-item';
-        li.innerHTML =`
-            <a class="nav-link" href="/">Logout</a>
-        `
-        const navbar = document.querySelector("#navigationBar")
-        navbar.appendChild(li)
-        let options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
+
+        async function logoutFunc() {
+            let options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            }
+            await fetch('http://localhost:8080/api/auth/logout', options)
+            
+            window.location.hash = `#home`
+            location.reload(true)
         }
-        navbar.onclick = () => fetch('http://localhost:8080/api/auth/logout', options)
     }
 
     function showError(status_code) {
+        const alert = document.querySelector("#divAlerts")
         if(status_code == 401){
-            util.showAlert("Wrong credentials!")
+            alert.innerHTML = 'Wrong credentials...'
         }
         else if(status_code == 404){
-            util.showAlert("Username not found. Try another one...")
+            alert.innerHTML = 'Username not found. Try another one...'
         } 
         else {
-            util.showAlert("Something went wrong :( Try again later...");
+            alert.innerHTML = 'Something went wrong :( Try again later...'
         }
     }
-
 }

@@ -65,10 +65,16 @@ async function getLeaguesById(req, res) {
  */
 async function getGroupList(req, res) {
     try{
-        let groupsList = await focaService.getGroupList(req.user.username)
-        res.statusCode = 200
-        res.setHeader('content-type', 'application/json')
-        res.end(responseBuilder.multipleGroups(groupsList))
+        if(!req.user){
+            res.statusCode = 401
+            res.setHeader('content-type', 'application/json')
+            res.end()
+        } else {
+            let groupsList = await focaService.getGroupList(req.user.username)
+            res.statusCode = 200
+            res.setHeader('content-type', 'application/json')
+            res.end(responseBuilder.multipleGroups(groupsList))
+        }
     } catch (err) {
         errorHandler(err,res)
     }
@@ -176,6 +182,8 @@ function statusCodeManager(statusCode){
     switch(statusCode) {
         case 403:
             return {statusCode: 403, message: 'The resource you are looking for is restricted.'}
+        case 429:
+            return {statusCode: 429, message: 'Too many requests.'}
         case 500:
             return {statusCode: 500, message: 'Something went wrong whilst trying to get your data.'}
         case statusCode >= 400 && statusCode < 418:
