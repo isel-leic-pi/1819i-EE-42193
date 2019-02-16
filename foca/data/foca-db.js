@@ -13,8 +13,8 @@ module.exports = class FocaDatabase {
         return getRequest(`/${groupId}`)
     }
 
-    postGroup(name, description, username){
-        return postRequest(name, description, ``, username)
+    postGroup(name, description, username, teams){
+        return postRequest(name, description, ``, username, teams)
     }
 
     putGroupById(name, description, groupId){
@@ -39,12 +39,12 @@ async function getRequest(path){
     return await rp(options)
 }
 
-async function postRequest(groupName, groupDescription, path, username){
+async function postRequest(groupName, groupDescription, path, username, teams){
     let groupObj = {
         name: groupName,
         description: groupDescription,
         username: username,
-        teams:[]
+        teams: teams
     }
     const options = {
         method: 'POST',

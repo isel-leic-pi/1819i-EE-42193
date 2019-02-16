@@ -85,7 +85,12 @@ async function getGroupList(req, res) {
  */
 async function postGroup(req, res) {
     try{
-        let info = await focaService.postGroup(req.body.name, req.body.description, req.user.username)
+        let info = ""
+        if(req.body.teams){
+            info = await focaService.postGroup(req.body.name, req.body.description, req.user.username, req.body.teams)
+        } else {
+            info = await focaService.postGroup(req.body.name, req.body.description, req.user.username, [])
+        }
         res.statusCode = 201
         res.setHeader('content-type', 'application/json')
         res.end(responseBuilder.createdOrEditedGroup(info))

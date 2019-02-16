@@ -1,6 +1,8 @@
 module.exports = function (groupTemplate, matchesTemplate) {
     const edit = document.querySelector("#create")
     edit.innerHTML = 'Edit group'
+    const copy = document.querySelector("#copy")
+    copy.style.display = "inline"
     const name = document.querySelector("#name")
     const description = document.querySelector("#description")
 
@@ -11,11 +13,18 @@ module.exports = function (groupTemplate, matchesTemplate) {
     edit.addEventListener("click", event => { event.preventDefault() }, true)
     edit.onclick = editClick;
 
-    function addTeam() {
-        const textBox = document.querySelector("#inputTeam")
-        if(!textBox.value) return;
+    copy.addEventListener("click", event => { event.preventDefault() }, true)
+    copy.onclick = copyClick;
 
-        const url = `http://localhost:8080/foca/favorites/groups/${groupId}/teams/${textBox.value}`
+    async function addTeam() {
+        const teamId = document.querySelector("#inputTeam")
+        if(!teamId.value) return;
+        if(!await checkValidTeam(teamId)){
+            showTeamError()
+            return
+        }
+
+        const url = `http://localhost:8080/foca/favorites/groups/${groupId}/teams/${teamId.value}`
         let options = {
             method: 'PUT',
             headers: {
@@ -34,7 +43,7 @@ module.exports = function (groupTemplate, matchesTemplate) {
             p.className = 'card-text';
             p.innerHTML =`
                 TEAM_NAME
-                <button type="button" class="btn btn-danger" id="deleteButton" value="${textBox.value}">Delete team</button>
+                <button type="button" class="btn btn-danger" id="deleteButton" value="${teamId.value}">Delete team</button>
             `
             document.querySelector("#teamsView").appendChild(p)*/
         }
@@ -62,7 +71,20 @@ module.exports = function (groupTemplate, matchesTemplate) {
         }
     }
 
+    async function getTeams(){
+        const url = `http://localhost:8080/foca/favorites/groups/${groupId}`
+        let group = await fetch(url)
+            .then(processResponse)
+            .catch(showCopyError)
+        return group.teams
+    }
+
     function editClick(event) {
+        if(!checkEmptyInput()){
+            showInputError()
+            return
+        }
+
         const url = `http://localhost:8080/foca/favorites/groups/${groupId}`
         let bodyObj = {
             name: name.value,
@@ -81,11 +103,66 @@ module.exports = function (groupTemplate, matchesTemplate) {
             .catch(showEditError)
     }
 
+    async function copyClick(event) {
+        const nameDetail = document.querySelector("#nameDetail")
+
+        if(!checkEmptyInput()){
+            showInputError()
+            return
+        }
+        
+        if(name.value == nameDetail.innerHTML){
+            showSameNameError()
+            return
+        }
+
+        let teams = await getTeams()
+
+        const url = `http://localhost:8080/foca/favorites/groups`
+        let bodyObj = {
+            name: name.value,
+            description: description.value,
+            teams: teams
+        }
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bodyObj)
+        }
+        fetch(url, options)
+            .then(processResponse)
+            .then(showNewGroupView)
+            .catch(showCopyError)        
+    }
+
     const url = `http://localhost:8080/foca/favorites/groups/${groupId}`
     fetch(url)
         .then(processResponse)
         .then(showGroupView)
         .catch(showError)
+
+    async function checkValidTeam(teamId){
+        let valid = true;
+
+        const url = `http://localhost:8080/foca/favorites/groups/${groupId}`
+        await fetch(url)
+            .then(processResponse)
+            .then(teamCheck)
+            .catch(showError)
+
+        function teamCheck(teams){
+            teams = teams.teams
+            
+            teams.forEach(team => {
+                if(team.id == teamId.value){
+                    valid = false
+                }
+            })
+        }
+        return valid
+    }
 
     function processResponse(res) {
         if (!res.ok) {
@@ -99,6 +176,10 @@ module.exports = function (groupTemplate, matchesTemplate) {
         document.querySelector("#descriptionDetail").innerHTML = description.value
         name.value = ''
         description.value = ''
+    }
+
+    function showNewGroupView(group) {
+        window.location.hash = `#groups/${group.group_id}`
     }
 
     async function showGroupView(group) {
@@ -131,9 +212,29 @@ module.exports = function (groupTemplate, matchesTemplate) {
             .then(processResponse)
             .catch(showRemoveError)
     }
+
+    function checkEmptyInput(){
+        return name.value && description.value;
+    }
+
+    function showInputError() {
+        results.innerHTML = "You must write a valid name and description...";
+    }
+
+    function showSameNameError() {
+        results.innerHTML = "You can't have two groups with the same name...";
+    }
+
+    function showTeamError() {
+        results.innerHTML = "You can't had the same team twice to the same group...";
+    }
   
     function showEditError(e) {
         results.innerHTML = "Couldn't edit that group...";
+    }
+
+    function showCopyError(e) {
+        results.innerHTML = "Couldn't copy that group...";
     }
 
     function showRemoveError(e) {

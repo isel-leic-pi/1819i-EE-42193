@@ -1,5 +1,7 @@
 module.exports = function (groupsTemplate) {
     const create = document.querySelector("#create")
+    const copy = document.querySelector("#copy")
+    copy.style.display = "none"
     const name = document.querySelector("#name")
     const description = document.querySelector("#description")
 
@@ -8,7 +10,15 @@ module.exports = function (groupsTemplate) {
     create.addEventListener("click", event => { event.preventDefault() }, true)
     create.onclick = createClick;
 
-    function createClick(event) {
+    async function createClick(event) {
+        if(!checkEmptyInput()){
+            showInputError()
+            return
+        } else if (!await checkValidName()){
+            showNameError()
+            return
+        }
+        
         const url = `http://localhost:8080/foca/favorites/groups`
         let bodyObj = {
             name: name.value,
@@ -33,13 +43,6 @@ module.exports = function (groupsTemplate) {
         .then(showGroupsView)
         .catch(showError)
 
-    function processResponse(res) {
-        if (!res.ok) {
-            throw res.status
-        }
-        return res.json()
-    }
-
     function showGroupView(group) {
         window.location.hash = `#groups/${group.group_id}`
     }
@@ -57,6 +60,46 @@ module.exports = function (groupsTemplate) {
                 window.location.hash = hash
             }
         }
+    }
+
+    function checkEmptyInput(){
+        return name.value && description.value;
+    }
+
+    async function checkValidName(){
+        let valid = true;
+
+        const url = `http://localhost:8080/foca/favorites/groups`
+        await fetch(url)
+            .then(processResponse)
+            .then(nameCheck)
+            .catch(showCreationError)
+
+        function nameCheck(groups){
+            groups = groups.groups
+
+            groups.forEach(group => {
+                if(group.name === name.value){
+                    valid = false
+                }
+            })
+        }
+        return valid
+    }
+
+    function processResponse(res) {
+        if (!res.ok) {
+            throw res.status
+        }
+        return res.json()
+    }
+
+    function showInputError() {
+        results.innerHTML = "You must write a valid name and description...";
+    }
+
+    function showNameError() {
+        results.innerHTML = "You can't have two groups with the same name...";
     }
   
     function showCreationError(e) {

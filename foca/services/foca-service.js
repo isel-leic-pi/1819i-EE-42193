@@ -26,8 +26,8 @@ module.exports = class FocaService {
         return await focaData.getFavorites(username)
     }
     
-    async postGroup(name, description, username){
-        return await focaData.postGroup(name, description, username)
+    async postGroup(name, description, username, teams){
+        return await focaData.postGroup(name, description, username, teams)
     }
     
     async editGroup(name, description, groupId){
